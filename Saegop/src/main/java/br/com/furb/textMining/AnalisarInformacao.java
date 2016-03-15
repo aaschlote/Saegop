@@ -1,8 +1,10 @@
 package br.com.furb.textMining;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 
 
+import java.util.Date;
 
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
@@ -13,13 +15,17 @@ public class AnalisarInformacao {
 	private String dsFato;
 	private String dsBairro;
 	private String dsLocal;
+	private String dsDtOcorrencia;
 	private double longitude;
 	private double latitude;
+	private Date dtOcorrencia;
 	private GeoApiContext context;
+	private WordTokenizer tokenizer = new WordTokenizer();
 	
-	public AnalisarInformacao(String dsFato, String dsBairro, GeoApiContext context) {
+	public AnalisarInformacao(String dsFato, String dsBairro, String dsDtOcorrencia, GeoApiContext context) {
 		this.dsFato		= dsFato;
 		this.dsBairro	= dsBairro;
+		this.dsDtOcorrencia = dsDtOcorrencia;
 		this.context 	= context;
 	}
 
@@ -54,6 +60,12 @@ public class AnalisarInformacao {
 			(!getDsLocal().equalsIgnoreCase("null"))){
 			buscarLongitudeLatitude(getDsLocal());
 		}
+		
+		if	((!dsDtOcorrencia.equalsIgnoreCase("")) &&
+				(dsDtOcorrencia.length() > 8)){
+			montarDataOcorrencia(dsDtOcorrencia);
+		}
+		
 	}
 	
 	public void buscarLongitudeLatitude(String dsLocal) throws Exception{
@@ -64,6 +76,62 @@ public class AnalisarInformacao {
 			setLatitude(geocodingResult.geometry.location.lat);
 			setLongitude(geocodingResult.geometry.location.lng);
 		}
+	}
+	
+	public void montarDataOcorrencia(String dsDtOcorrencia) throws Exception{
+		int qtPassagens = 0;
+		Collection<Word> dataWords = tokenizer.getWords(dsDtOcorrencia);
+		String nrDia = "";
+		String nrMes = "";
+		String nrAno = "";
+		for (Word word : dataWords) {
+			if	(qtPassagens == 0){
+				nrDia = word.toString();
+				nrDia = (nrDia.length() == 1 ? "0"+nrDia : nrDia);
+			}else if (qtPassagens == 1){
+				nrMes = getMesAno(word.toString());
+			}else if (qtPassagens == 2){
+				nrAno = word.toString();
+			}
+			qtPassagens++;
+		}
+		
+		if	((!nrDia.equalsIgnoreCase("")) &&
+				(!nrMes.equalsIgnoreCase(""))&&
+				(!nrAno.equalsIgnoreCase(""))){
+			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+			System.out.println(nrDia+"/"+nrMes+"/"+nrAno);
+			dtOcorrencia = formato.parse(nrDia+"/"+nrMes+"/"+nrAno);
+		}
+	}
+	
+	private final static String getMesAno(String mes){
+		 if	(mes.equalsIgnoreCase("jan")){
+			 return "01";
+		 }else if(mes.equalsIgnoreCase("fever")){
+			 return "02";
+		 }else if(mes.equalsIgnoreCase("marc")){
+			 return "03";
+		 }else if(mes.equalsIgnoreCase("abril")){
+			 return "04";
+		 }else if(mes.equalsIgnoreCase("mai")){
+			 return "05";
+		 }else if(mes.equalsIgnoreCase("junh")){
+			 return "06";
+		 }else if(mes.equalsIgnoreCase("julh")){
+			 return "07";
+		 }else if(mes.equalsIgnoreCase("agost")){
+			 return "08";
+		 }else if(mes.equalsIgnoreCase("setembr")){
+			 return "09";
+		 }else if(mes.equalsIgnoreCase("outubr")){
+			 return "10";
+		 }else if(mes.equalsIgnoreCase("novembr")){
+			 return "11";
+		 }else if(mes.equalsIgnoreCase("dezembr")){
+			 return "12";
+		 }
+	     return "";
 	}
 
 	public String getDsFato() {
@@ -104,6 +172,14 @@ public class AnalisarInformacao {
 
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
+	}
+
+	public Date getDtOcorrencia() {
+		return dtOcorrencia;
+	}
+
+	public void setDtOcorrencia(Date dtOcorrencia) {
+		this.dtOcorrencia = dtOcorrencia;
 	}
 	
 

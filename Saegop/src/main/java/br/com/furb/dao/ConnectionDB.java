@@ -14,4 +14,8 @@ public class ConnectionDB {
 		manager = factory.createEntityManager();
 	}
 
+	public EntityManager getManager() {
+		return manager;
+	}
+
 }

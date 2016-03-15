@@ -2,11 +2,18 @@ package br.com.furb.textMining;
 
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import javax.persistence.Query;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import br.com.furb.controller.CriarAtividadePolicial;
+import br.com.furb.dao.ConnectionDB;
+import br.com.furb.model.AtividadePolicial;
 
 import com.google.maps.GeoApiContext;
 
@@ -14,11 +21,16 @@ public class MiningText {
 	
 	ArrayList<String> listaString = new ArrayList<String>();
 	ArrayList<AnalisarInformacao> listaAnalisar = new ArrayList<AnalisarInformacao>();
-	private static final int qtPages = 31;
+	ArrayList<AtividadePolicial> listaAtividades = new ArrayList<AtividadePolicial>();
+	private static final int qtPages = 41;
 	GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyClyg2c5hxqJotZHUhAPx8oufyvgzlaix4");
+	ConnectionDB conection = new ConnectionDB();
 
 	public void extrair() {
 		try {
+			
+			removeAllInstances();
+			
 			Document document = Jsoup
 					.connect(
 							"http://www.saladenoticias.net/?s=atividade%20operacionais&submit=Pesquisar")
@@ -67,7 +79,21 @@ public class MiningText {
 
 			for (AnalisarInformacao ocorrencias : listaAnalisar) {
 				ocorrencias.processar();
+				
+				AtividadePolicial atividade = new AtividadePolicial();
+				atividade.setDsBairro(ocorrencias.getDsBairro());
+				atividade.setDsEndereco(ocorrencias.getDsLocal());
+				atividade.setLatitude(ocorrencias.getLatitude());
+				atividade.setLongitude(ocorrencias.getLongitude());
+				atividade.setDsFato(ocorrencias.getDsFato());
+				Calendar dtOcorrencia = Calendar.getInstance();
+				dtOcorrencia.setTime(ocorrencias.getDtOcorrencia());
+				atividade.setDtOcorrencia(dtOcorrencia);				
+				listaAtividades.add(atividade);				
 			}
+			
+			CriarAtividadePolicial criarAtividade = new CriarAtividadePolicial(listaAtividades, conection);
+			criarAtividade.inserir();
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -163,7 +189,7 @@ public class MiningText {
 
 			if (getTodosCamposPreenchidos(dsHorario, dsLocal, dsFato)) {
 				AnalisarInformacao ocorrenciasPoliciais = new AnalisarInformacao(
-						dsFato, dsLocal,context);
+						dsFato, dsLocal,dsData,context);
 				listaAnalisar.add(ocorrenciasPoliciais);
 				dsHorario = "";
 				dsLocal = "";
@@ -177,6 +203,15 @@ public class MiningText {
 			String dsFato) {
 		return !dsHorario.equalsIgnoreCase("") && !dsLocal.equalsIgnoreCase("")
 				&& !dsFato.equalsIgnoreCase("");
+	}
+	
+	public final void removeAllInstances() {
+		conection.getManager().getTransaction().begin();
+	    Query query = conection.getManager().createQuery("from AtividadePolicial as a");
+	    for (Object obj : query.getResultList()) {
+	    	conection.getManager().remove(obj);
+	    }
+	    conection.getManager().getTransaction().commit();
 	}
 
 }
