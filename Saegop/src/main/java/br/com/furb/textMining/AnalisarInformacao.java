@@ -14,7 +14,7 @@ public class AnalisarInformacao {
 	
 	private String dsFato;
 	private String dsBairro;
-	private String dsLocal;
+	private String dsLocal = "";
 	private String dsDtOcorrencia;
 	private double longitude;
 	private double latitude;
@@ -56,10 +56,19 @@ public class AnalisarInformacao {
 			setDsLocal(dsLocalAux);
 		}
 		
-		if	((!getDsLocal().equalsIgnoreCase("")) &&
-			(!getDsLocal().equalsIgnoreCase("null"))){
-			buscarLongitudeLatitude(getDsLocal());
+		if	(getDsLocal().equalsIgnoreCase("")){
+			setDsLocal(getDsBairro());
 		}
+		
+		try {
+			if	((!getDsLocal().equalsIgnoreCase("")) &&
+				(!getDsLocal().equalsIgnoreCase("null"))){
+				buscarLongitudeLatitude(getDsLocal());
+			}
+		} catch (Exception e) {
+			System.out.println(getDsLocal() + " - " + e.getMessage());
+		}
+		
 		
 		if	((!dsDtOcorrencia.equalsIgnoreCase("")) &&
 				(dsDtOcorrencia.length() > 8)){
@@ -69,13 +78,13 @@ public class AnalisarInformacao {
 	}
 	
 	public void buscarLongitudeLatitude(String dsLocal) throws Exception{
-		GeocodingResult[] results = GeocodingApi.geocode(context,
+		/*GeocodingResult[] results = GeocodingApi.geocode(context,
 				dsLocal + ", Blumenau").await();
 		
 		for (GeocodingResult geocodingResult : results) {
 			setLatitude(geocodingResult.geometry.location.lat);
 			setLongitude(geocodingResult.geometry.location.lng);
-		}
+		}*/
 	}
 	
 	public void montarDataOcorrencia(String dsDtOcorrencia) throws Exception{
@@ -100,7 +109,6 @@ public class AnalisarInformacao {
 				(!nrMes.equalsIgnoreCase(""))&&
 				(!nrAno.equalsIgnoreCase(""))){
 			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-			System.out.println(nrDia+"/"+nrMes+"/"+nrAno);
 			dtOcorrencia = formato.parse(nrDia+"/"+nrMes+"/"+nrAno);
 		}
 	}

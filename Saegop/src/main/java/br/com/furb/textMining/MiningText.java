@@ -143,60 +143,94 @@ public class MiningText {
 				break;
 			}
 
-			if ((result.text().length() > 8)
-					&& (result.text().substring(0, 8)
-							.equalsIgnoreCase("Horário:"))) {
+			extrairFatos(dsData,result.text());
+		}
+	}
+	
+	public void extrairFatos(String dsData, String dsTexto){
+		
+		String dsHorario = "";
+		String dsLocal = "";
+		String dsFato = "";
+		
+		if ((dsTexto.length() > 8)
+				&& (dsTexto.substring(0, 8)
+						.equalsIgnoreCase("Horário:"))) {
 
-				if (result.text().indexOf("Local:") > 0) {
-					dsHorario = result.text().substring(0,
-							result.text().indexOf("Local:"));
-				} else {
-					dsHorario = result.text();
+			if (dsTexto.indexOf("Local:") > 0) {
+				dsHorario = dsTexto.substring(0,
+						dsTexto.indexOf("Local:"));
+			} else {
+				dsHorario = dsTexto;
+			}
+
+			if (dsTexto.indexOf("Local:") > 0) {
+
+				int qtFato = dsTexto.indexOf("Fato:");
+
+				if (qtFato <= 0) {
+					qtFato = dsTexto.length();
 				}
 
-				if (result.text().indexOf("Local:") > 0) {
-
-					int qtFato = result.text().indexOf("Fato:");
-
-					if (qtFato <= 0) {
-						qtFato = result.text().length();
-					}
-
-					dsLocal = result.text().substring(
-							result.text().indexOf("Local:"), qtFato);
-				}
-
-				if (result.text().indexOf("Fato:") > 0) {
-					dsFato = result.text().substring(
-							result.text().indexOf("Fato:"),
-							result.text().length());
-				}
-
+				dsLocal = dsTexto.substring(
+						dsTexto.indexOf("Local:"), qtFato);
 			}
 
-			if ((dsLocal.equalsIgnoreCase(""))
-					&& (result.text().length() > 6)
-					&& (result.text().substring(0, 6)
-							.equalsIgnoreCase("Local:"))) {
-				dsLocal = result.text();
+			if (dsTexto.indexOf("Fato:") > 0) {
+				dsFato = dsTexto.substring(
+						dsTexto.indexOf("Fato:"),
+						dsTexto.length());
 			}
 
-			if ((dsFato.equalsIgnoreCase(""))
-					&& (result.text().length() > 5)
-					&& (result.text().substring(0, 5).equalsIgnoreCase("Fato:"))) {
-				dsFato = result.text();
-			}
-
-			if (getTodosCamposPreenchidos(dsHorario, dsLocal, dsFato)) {
-				AnalisarInformacao ocorrenciasPoliciais = new AnalisarInformacao(
-						dsFato, dsLocal,dsData,context);
-				listaAnalisar.add(ocorrenciasPoliciais);
-				dsHorario = "";
-				dsLocal = "";
-				dsFato = "";
-			}
 		}
 
+		if ((dsLocal.equalsIgnoreCase(""))
+				&& (dsTexto.length() > 6)
+				&& (dsTexto.substring(0, 6)
+						.equalsIgnoreCase("Local:"))) {
+			dsLocal = dsTexto;
+		}
+
+		if ((dsFato.equalsIgnoreCase(""))
+				&& (dsTexto.length() > 5)
+				&& (dsTexto.substring(0, 5).equalsIgnoreCase("Fato:"))) {
+			dsFato = dsTexto;
+		}
+
+		if (getTodosCamposPreenchidos(dsHorario, dsLocal, dsFato)) {
+			
+			int qtHorario = dsFato.indexOf("Horário:");
+
+			if	(qtHorario > 0){
+				String dsNovoTexto = dsFato.substring(qtHorario,dsFato.length());
+				
+				if	(dsNovoTexto.length() > 10){
+					extrairFatos(dsData,dsNovoTexto);
+				}
+				
+				dsFato = dsFato.substring(0,qtHorario-8);
+			}
+			
+			
+			if	(dsFato.indexOf("UTILIDADE PÚBLICA") > 0){
+				dsFato = dsFato.substring(0,dsFato.indexOf("UTILIDADE PÚBLICA")-17);
+			}
+			
+			
+			
+			if	(dsFato.length() > 4000){
+				dsFato = dsFato.substring(0,3999);
+			}
+			
+			
+			AnalisarInformacao ocorrenciasPoliciais = new AnalisarInformacao(
+					dsFato, dsLocal,dsData,context);
+			listaAnalisar.add(ocorrenciasPoliciais);
+			dsHorario = "";
+			dsLocal = "";
+			dsFato = "";
+		}
+		
 	}
 
 	public boolean getTodosCamposPreenchidos(String dsHorario, String dsLocal,

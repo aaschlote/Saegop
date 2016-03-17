@@ -23,7 +23,7 @@ public class AtividadePolicial {
 	@Column(name = "DS_FATO")
 	private String dsFato;
 
-	@Column(name = "DS_BAIRRO")
+	@Column(name = "DS_BAIRRO", length=4000)
 	private String dsBairro;
 
 	@Column(name = "DS_ENDERECO")

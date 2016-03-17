@@ -20,7 +20,7 @@ public class CriarAtividadePolicial {
 		conection.getManager().getTransaction().begin();
 		
 		for (AtividadePolicial atividadePolicial : listaAtividades) {
-			conection.getManager().merge(atividadePolicial);
+			conection.getManager().persist(atividadePolicial);
 		}
 		
 		conection.getManager().getTransaction().commit();
