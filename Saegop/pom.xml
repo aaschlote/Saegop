@@ -7,6 +7,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Saegop Maven Webapp</name>
 	<url>http://maven.apache.org</url>
+	
+	 <properties>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	  </properties>
+	
 	<dependencies>
 
 		<!-- JUNIT -->
@@ -21,9 +26,24 @@
 		<!-- JAVAX SERVLET -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>3.0-alpha-1</version>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
 		</dependency>
+		
+		<dependency>
+	    	<groupId>javax</groupId>
+	    	<artifactId>javaee-api</artifactId>
+	    	<version>6.0</version>
+		</dependency>
+		
+		<dependency>
+	        <groupId>javax</groupId>
+	        <artifactId>javaee-web-api</artifactId>
+	        <version>6.0</version>
+	    	<scope>provided</scope>
+	    </dependency>
+	    
+	    
 		<!-- JAVAX SERVLET end -->
 
 		<!-- GMAPS -->
@@ -94,6 +114,13 @@
 			<artifactId>jta</artifactId>
 			<version>1.1</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+			<version>1.0</version>
+		</dependency>
+		
 		<!-- JAVAX end -->
 		
 		<!-- JSOUP -->
@@ -110,9 +137,19 @@
 		   <artifactId>ptstemmer</artifactId>
 		   <version>2010.1.13</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.9.3</version>
+		</dependency>
+
+		
+		
 
 	</dependencies>
 	<build>
 		<finalName>Saegop</finalName>
+		
 	</build>
 </project>

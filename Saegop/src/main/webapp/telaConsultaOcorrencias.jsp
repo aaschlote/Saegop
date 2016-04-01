@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta charset="utf-8">
-<title>Consulta de ocorrências policiais</title>
+<title>Consulta de ocorrÃªncias policiais</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/dashboard.css" rel="stylesheet">
 <link href="css/datepicker.css" rel="stylesheet">
@@ -14,26 +14,29 @@
 	<div class="container-fluid">
 	
 		<div class="row">
-        	<div class="col-sm-3 col-md-3 sidebar">
+        	<div class="col-sm-3 col-md-3 sidebar ">
         	
         		<h1 class="page-header">Filtros</h1>
         		
-        		<div clas="form-group">
-        			<label class="col-sm-5 control-label">Data inicio:</label>
-        		 	<input type="text" id="dtInicio" style=" width: 120px;" >
-        		</div>
+	        		<div class="form-group">
+	        			<label class="col-sm-5 control-label">Data inicio:</label>
+	        		 	<input type="text" id="dtInicio" style=" width: 120px;" >
+	        		</div>
         		
-        		<br>
-        			
-        			
-        		<div clas="form-group">
-        			<label class="col-sm-5 control-label">Data fim:</label>
-        		 	<input type="text" id="dtFim" style=" width: 120px;" >
-        		</div>
-          
+        			<div class="form-group">
+	        			<label class="col-sm-5 control-label">Data fim:</label>
+	        		 	<input type="text" id="dtFim" style=" width: 120px;" >
+	        		</div>
+	        		
+        			<div style="text-align: center">
+	        			<button class="btn btn-lg btn-primary btn-block"
+							id="buscarDados" >Buscar dados
+						</button>
+					</div>
+				      
         	</div>
 	        <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-3 main">
-	         	<h1 class="page-header">Mapa de ocorrências</h1>
+	         	<h1 class="page-header">Mapa de ocorrÃªncias</h1>
 	          
 	          	
 	          	<div id="mapa" style="height: 500px; width: 100%; position: relative;">
@@ -47,14 +50,13 @@
       </div>	
 	</div>
 	
-	<!-- Arquivo de inicialização do mapa -->
+	<!-- Arquivo de inicializaÃ§Ã£o do mapa -->
     <script src="js/jquery.min.js"></script>
     <script src="js/mapa.js"></script>
     <script src="js/bootstrap-datepicker.js"></script>
     
     <script>
-    	var today = new Date();
-    	var todayFomart = new
+    	var data = new Date();
     	$(function(){
     		$('#dtInicio').datepicker({
     			 format: "dd/mm/yyyy",
@@ -65,6 +67,19 @@
    	         language: "pt-BR"
    		});
     		
+    		var dia    = data.getDate();
+    		var mes    = data.getMonth()+1;
+    		var ano    = data.getFullYear();
+    		
+    		if(dia<10){
+    			dia='0'+dia;
+    	    } 
+    	    if(mes<10){
+    	    	mes='0'+mes;
+    	    } 
+    		
+    		document.getElementById('dtInicio').value = '01/'+ mes+'/'+ ano;
+    		document.getElementById('dtFim').value = dia+'/'+ mes+'/'+ ano;
     		
     	});
     

@@ -1,5 +1,5 @@
 var map;
-var marker;
+var markers = [];
 var geocoder;
 
 geocoder = new google.maps.Geocoder();
@@ -18,22 +18,81 @@ function initialize() {
 
 initialize();
 
-function carregarPontos() {
-	 
-    $.getJSON('json/pontos.json', function(pontos) {
+$('#buscarDados').on('click', function (e) {
+	
+	dtInicio = document.getElementById("dtInicio");
+	dtFim = document.getElementById("dtFim");
+	var patternData = /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/;
+
+	if (dtInicio.value == ""){
+		alert ('Obrigatório informar a data de inicio');    
+		document.getElementById("dtInicio").focus();
+		return false;
+	}
+
+	if(!patternData.test(dtInicio.value)){
+	    alert("Digite a data no formato Dia/Mês/Ano");
+	    document.getElementById("dtInicio").focus();
+	    return false;
+	}
+	
+	if (dtFim.value == ""){
+		alert ('Obrigatório informar a data de inicio');    
+		document.getElementById("dtFim").focus();
+		return false;
+	}
+	
+	if(!patternData.test(dtFim.value)){
+	    alert("Digite a data no formato Dia/Mês/Ano");
+	    document.getElementById("dtFim").focus();
+	    return false;
+	}
+	
+	$.ajax({
+        url: "saegopBuscarPontos",
+        type: 'POST',
+        data: {'dt-inicio' : dtInicio.value, 'dt-fim' : dtFim.value},
+        dataType: "json",
+        success: function (data) { 
+        	carregarPontos(data);
+        	return false;
+        },
+        error:function(data,status,er) {
+            alert("error: "+data+" status: "+status+" er:"+er);
+        }
+    });
+
+})
  
-        $.each(pontos, function(index, ponto) {
+
+function carregarPontos(pontosJson) {
+	 
+	deleteMarkers();
+	$.each(pontosJson, function(index, ponto) {
  
             var marker = new google.maps.Marker({
                 position: new google.maps.LatLng(ponto.latitude, ponto.longitude),
-                title: "Meu ponto personalizado! :-D",
+                title: ponto.dsFato,
                 map: map,
                 icon: 'img/marcador.png'
             });
+            markers.push(marker);
  
         });
- 
-    });
- 
+
 }
- 
+
+function setMapOnAll(map) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
+}
+
+function clearMarkers() {
+  setMapOnAll(null);
+}
+
+function deleteMarkers() {
+  clearMarkers();
+  markers = [];
+}

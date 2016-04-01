@@ -78,13 +78,13 @@ public class AnalisarInformacao {
 	}
 	
 	public void buscarLongitudeLatitude(String dsLocal) throws Exception{
-		/*GeocodingResult[] results = GeocodingApi.geocode(context,
+		GeocodingResult[] results = GeocodingApi.geocode(context,
 				dsLocal + ", Blumenau").await();
 		
 		for (GeocodingResult geocodingResult : results) {
 			setLatitude(geocodingResult.geometry.location.lat);
 			setLongitude(geocodingResult.geometry.location.lng);
-		}*/
+		}
 	}
 	
 	public void montarDataOcorrencia(String dsDtOcorrencia) throws Exception{
