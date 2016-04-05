@@ -8,46 +8,65 @@
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/dashboard.css" rel="stylesheet">
 <link href="css/datepicker.css" rel="stylesheet">
+<link href="css/infoWindowsGmaps.css" rel="stylesheet">
 </head>
 <body>
 
-	<div class="container-fluid">
+	<div class="wrapper" role="main">
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+	        	<div class="navbar-header">
+	          		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	            		<span class="sr-only">Toggle navigation</span>
+	            		<span class="icon-bar"></span>
+	            		<span class="icon-bar"></span>
+	            		<span class="icon-bar"></span>
+	          		</button>
+	          		<a class="navbar-brand" href="#">Consulta de ocorrências de policiais</a>
+	        	</div>
+	        	<div id="navbar" class="navbar-collapse collapse">
+	          		<ul class="nav navbar-nav navbar-right">
+		            	<li><a href="#">Dashboard</a></li>
+		            	<li><a href="#">Settings</a></li>
+		            	<li><a href="#">Profile</a></li>
+		            	<li><a href="#">Help</a></li>
+	          		</ul>
+	        	</div>
+	      </div>
+	    </nav>
 	
-		<div class="row">
-        	<div class="col-sm-3 col-md-3 sidebar ">
-        	
-        		<h1 class="page-header">Filtros</h1>
-        		
-	        		<div class="form-group">
-	        			<label class="col-sm-5 control-label">Data inicio:</label>
-	        		 	<input type="text" id="dtInicio" style=" width: 120px;" >
-	        		</div>
-        		
-        			<div class="form-group">
-	        			<label class="col-sm-5 control-label">Data fim:</label>
-	        		 	<input type="text" id="dtFim" style=" width: 120px;" >
-	        		</div>
-	        		
-        			<div style="text-align: center">
+		<div class="container-fluid">		
+			<div class="row">
+	        	<div class="col-sm-3 col-md-2 sidebar">
+	        		<h1 class="page-header">Filtros
+	        		</h1>
+        			<label>Dt inicio:</label>
+		        	<input type="text" id="dtInicio" style=" width: 120px;" >
+		        	
+		        	<p> </p>
+		        	
+		        	<label>Data fim:</label>
+		        	<input type="text" id="dtFim" style=" width: 120px;" >
+		        	
+		        	<p> </p>
+		        	
+		        	<div style="text-align: center">
 	        			<button class="btn btn-lg btn-primary btn-block"
 							id="buscarDados" >Buscar dados
 						</button>
 					</div>
-				      
-        	</div>
-	        <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-3 main">
-	         	<h1 class="page-header">Mapa de ocorrências</h1>
-	          
-	          	
-	          	<div id="mapa" style="height: 500px; width: 100%; position: relative;">
-	          	</div>
-	          	
-	          
-	          	<!-- Maps API Javascript -->
-	        	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDmBHVNZkiSU8JyL16GF85EGE8qv3D42HM&amp;sensor=false"></script>
-	          	
-	         </div>
-      </div>	
+	        	</div>
+		        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+		         	<h1 class="page-header">Mapa de ocorrências</h1>
+		         	<div class="table-responsive">
+			          	<div id="mapa" style="height: 500px; width: 100%; position: relative;">
+			          	</div>
+			          	<!-- Maps API Javascript -->
+			        	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDmBHVNZkiSU8JyL16GF85EGE8qv3D42HM&amp;sensor=false"></script>
+					</div>				        			          		
+		         </div>
+	      </div>	
+		</div>
 	</div>
 	
 	<!-- Arquivo de inicialização do mapa -->

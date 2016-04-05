@@ -50,8 +50,6 @@ public class BuscarDadosPontos extends HttpServlet {
 		" and a.dtOcorrencia between :dt_inicio and :dt_fim " +
 		" and a.latitude <> 0  and a.longitude <> 0";
 		
-		
-		
 		Query query = conection.getManager().createQuery(sql);
 		
 		query.setParameter("dt_inicio", dtInicio);
