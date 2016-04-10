@@ -52,7 +52,7 @@
 		        	
 		        	<div style="text-align: center">
 	        			<button class="btn btn-lg btn-primary btn-block"
-							id="buscarDados" >Buscar dados
+							id="buscarDadosHeats" >Buscar dados
 						</button>
 					</div>
 	        	</div>
@@ -62,7 +62,12 @@
 			          	<div id="mapa" style="height: 500px; width: 100%; position: relative;">
 			          	</div>
 			          	<!-- Maps API Javascript -->
-			        	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDmBHVNZkiSU8JyL16GF85EGE8qv3D42HM&amp;sensor=false"></script>
+			        	<!--  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDmBHVNZkiSU8JyL16GF85EGE8qv3D42HM&amp;sensor=false"></script>
+			        	-->
+			        	
+			        	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmBHVNZkiSU8JyL16GF85EGE8qv3D42HM&libraries=visualization&sensor=true_or_false"></script>
+			        	
+			        	
 					</div>				        			          		
 		         </div>
 	      </div>	
