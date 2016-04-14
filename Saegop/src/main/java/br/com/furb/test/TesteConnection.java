@@ -10,7 +10,7 @@ public class TesteConnection {
 			ConnectionDB user = new ConnectionDB();
 			System.out.println("CONECTADO");
 		} catch (Exception e) {
-			System.out.println("NÃO CONECTADO \n" + e.getMessage());
+			System.out.println("NAO CONECTADO \n" + e.getMessage());
 			e.printStackTrace();
 		}
 	}

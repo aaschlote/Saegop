@@ -1,7 +1,7 @@
 var map;
 var markers = [];
 var geocoder;
-var heatmap;
+var heatmaps = [];
 
 geocoder = new google.maps.Geocoder();
  
@@ -67,20 +67,32 @@ $('#buscarDadosHeats').on('click', function (e) {
 
 function carregarHeats(pontosJson) {
 	
-var pointsPosition = [];	
+	var pointsPosition = [];
+	
+	deleteHeatmap();
 	
 	$.each(pontosJson, function(index, ponto) {
 		position = new google.maps.LatLng(ponto.latitude, ponto.longitude);
 		pointsPosition.push(position);
 	});
 	
-	heatmap = new google.maps.visualization.HeatmapLayer({
-		data: pointsPosition,
-		map: map
+	var heatmap = new google.maps.visualization.HeatmapLayer({
+		data: pointsPosition
 	});
 	
 	heatmap.set('radius', heatmap.get('radius') ? null : 20);
 	
+	heatmaps.push(heatmap);
+	heatmap.setMap(map);
+	
+	
+}
+
+function deleteHeatmap(){
+    for (var k = 0; k < heatmaps.length; k++) {
+    	heatmaps[k].setMap(null);
+    }
+    heatmaps=[];
 }
 	    
 
@@ -137,7 +149,7 @@ function carregarPontos(pontosJson) {
 	$.each(pontosJson, function(index, ponto) {
 		
 		var dia    = ponto.dtOcorrencia.dayOfMonth;
-		var mes    = ponto.dtOcorrencia.month;
+		var mes    = ponto.dtOcorrencia.month+1;
 		
 		if(dia<10){
 			dia='0'+dia;

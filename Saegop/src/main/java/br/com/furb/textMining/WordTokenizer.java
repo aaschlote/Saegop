@@ -5,18 +5,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ptstemmer.Stemmer;
-import ptstemmer.implementations.OrengoStemmer;
 
 public class WordTokenizer {
 	
 	private static boolean removeNumbersAndSingleLetters = false;
-	private StopWords stopWords = new StopWords();
-	private Stemmer stemmer;
+	private final static StopWords stopWords = new StopWords();
 
-	public Collection<Word> getWords(String value) throws Exception {
-		
-		stemmer = new OrengoStemmer();
-		
+	public Collection<Word> getWords(String value, Stemmer stemmer) throws Exception {
 		
 		String temp = Normalizer.normalize(value, Normalizer.Form.NFKD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");   
 		value = temp.replaceAll("[^\\p{ASCII}]",""); 
@@ -40,6 +35,9 @@ public class WordTokenizer {
 			}
 
 		}
+		
+		stemmer.clearIgnoreList();
+		
 		return words;
 
 	}

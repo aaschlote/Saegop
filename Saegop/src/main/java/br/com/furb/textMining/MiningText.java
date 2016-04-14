@@ -11,6 +11,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import ptstemmer.Stemmer;
+import ptstemmer.implementations.OrengoStemmer;
 import br.com.furb.controller.CriarAtividadePolicial;
 import br.com.furb.dao.ConnectionDB;
 import br.com.furb.model.AtividadePolicial;
@@ -22,29 +24,36 @@ public class MiningText {
 	ArrayList<String> listaString = new ArrayList<String>();
 	ArrayList<AnalisarInformacao> listaAnalisar = new ArrayList<AnalisarInformacao>();
 	ArrayList<AtividadePolicial> listaAtividades = new ArrayList<AtividadePolicial>();
-	private static final int qtPages = 41;
+	private static final int qtPages = 90;
 	GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyClyg2c5hxqJotZHUhAPx8oufyvgzlaix4");
 	ConnectionDB conection = new ConnectionDB();
+	Stemmer stemmer;
 
 	public void extrair() {
 		try {
+			
+			stemmer = new OrengoStemmer();
 			
 			removeAllInstances();
 			
 			Document document = Jsoup
 					.connect(
-							"http://www.saladenoticias.net/?s=atividade%20operacionais&submit=Pesquisar")
+							"http://www.saladenoticias.net/?s=REGI%C3%83O+POLICIAL+MILITAR&submit=Pesquisar")
 					.timeout(10 * 1000).get();
 			Elements searchResults = document.select(".post > h2 > a");
 			for (Element result : searchResults) {
 				String link = result.attr("href");
 				listaString.add(link);
 			}
+			
+			document = null;
+			
+			searchResults.clear();
 
 			for (int i = 2; i <= qtPages; i++) {
 				Document documentSub = Jsoup
 						.connect(
-								"http://www.saladenoticias.net/?s=atividade+operacionais&submit=Pesquisar&paged="
+								"http://www.saladenoticias.net/?s=REGI%C3%83O+POLICIAL+MILITAR&submit=Pesquisar&paged="
 										+ i).timeout(10 * 1000).get();
 				Elements searchResultsSub = documentSub
 						.select(".post > h2 > a");
@@ -53,6 +62,9 @@ public class MiningText {
 					listaString.add(link);
 					System.out.println(link);
 				}
+				
+				documentSub = null;
+				searchResultsSub.clear();
 			}
 
 		} catch (SocketTimeoutException s) {
@@ -71,9 +83,11 @@ public class MiningText {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		} finally {
-			System.out.println("QUANTIDADES DE FATOS EXTRAÍDOS "
+			System.out.println("QUANTIDADES DE FATOS EXTRAÃDOS "
 					+ listaAnalisar.size());
 		}
+		
+		listaString.clear();
 
 		try {
 
@@ -89,11 +103,16 @@ public class MiningText {
 				Calendar dtOcorrencia = Calendar.getInstance();
 				dtOcorrencia.setTime(ocorrencias.getDtOcorrencia());
 				atividade.setDtOcorrencia(dtOcorrencia);				
-				listaAtividades.add(atividade);				
+				listaAtividades.add(atividade);
+				
+				System.out.println("QUANTIDADE DE ATIVIDADES " +  listaAtividades.size());
 			}
 			
+			System.out.println("Inserindo");
 			CriarAtividadePolicial criarAtividade = new CriarAtividadePolicial(listaAtividades, conection);
 			criarAtividade.inserir();
+			
+			System.out.println("fim");
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -109,42 +128,43 @@ public class MiningText {
 		Elements searchDtOcorrencoa = document.select(".heading-date");
 		String dsData = searchDtOcorrencoa.text();
 
-		String dsHorario = "";
-		String dsLocal = "";
-		String dsFato = "";
 		System.out.println(dsLink);
 		for (Element result : searchResults) {
 
-			if (result.text().trim().equalsIgnoreCase(" ")) {
+			if	(result.text().trim().equalsIgnoreCase(" ")){
 				continue;
 			}
-
-			if (result.text().equalsIgnoreCase("Ocorrências de destaque:")) {
+			
+			if	(result.text().equalsIgnoreCase("OcorrÃªncias de destaque:")){
 				continue;
 			}
-
-			if (result.text().equalsIgnoreCase(". Ocorrências de destaque:")) {
+			
+			if	(result.text().equalsIgnoreCase(". OcorrÃªncias de destaque:")){
 				continue;
 			}
-
-			if (result.text().contentEquals("UTILIDADE PÚBLICA")) {
+			
+			if (result.text().contentEquals("UTILIDADE PÃšBLICA")) {
 				break;
 			}
 
 			if ((result.text().length() > 17)
 					&& (result.text().trim().substring(0, 17)
-							.equalsIgnoreCase("UTILIDADE PÚBLICA"))) {
+							.equalsIgnoreCase("UTILIDADE PÃšBLICA"))) {
 				break;
 			}
 
 			if ((result.text().length() > 19)
 					&& (result.text().trim().substring(0, 19)
-							.equalsIgnoreCase("  UTILIDADE PÚBLICA"))) {
+							.equalsIgnoreCase("  UTILIDADE PÃšBLICA"))) {
 				break;
 			}
 
 			extrairFatos(dsData,result.text());
 		}
+		
+		searchResults.clear();
+		searchDtOcorrencoa.clear();
+		document = null;
 	}
 	
 	public void extrairFatos(String dsData, String dsTexto){
@@ -155,7 +175,7 @@ public class MiningText {
 		
 		if ((dsTexto.length() > 8)
 				&& (dsTexto.substring(0, 8)
-						.equalsIgnoreCase("Horário:"))) {
+						.equalsIgnoreCase("HorÃ¡rio:"))) {
 
 			if (dsTexto.indexOf("Local:") > 0) {
 				dsHorario = dsTexto.substring(0,
@@ -199,7 +219,7 @@ public class MiningText {
 
 		if (getTodosCamposPreenchidos(dsHorario, dsLocal, dsFato)) {
 			
-			int qtHorario = dsFato.indexOf("Horário:");
+			int qtHorario = dsFato.indexOf("HorÃ¡rio:");
 
 			if	(qtHorario > 0){
 				String dsNovoTexto = dsFato.substring(qtHorario,dsFato.length());
@@ -211,20 +231,16 @@ public class MiningText {
 				dsFato = dsFato.substring(0,qtHorario-8);
 			}
 			
-			
-			if	(dsFato.indexOf("UTILIDADE PÚBLICA") > 0){
-				dsFato = dsFato.substring(0,dsFato.indexOf("UTILIDADE PÚBLICA")-17);
+			if	(dsFato.indexOf("UTILIDADE PÃšBLICA") > 0){
+				dsFato = dsFato.substring(0,dsFato.indexOf("UTILIDADE PÃšBLICA")-17);
 			}
-			
-			
 			
 			if	(dsFato.length() > 4000){
 				dsFato = dsFato.substring(0,3999);
 			}
 			
-			
 			AnalisarInformacao ocorrenciasPoliciais = new AnalisarInformacao(
-					dsFato, dsLocal,dsData,context);
+					dsFato, dsLocal,dsData,context, stemmer);
 			listaAnalisar.add(ocorrenciasPoliciais);
 			dsHorario = "";
 			dsLocal = "";

@@ -6,6 +6,8 @@ import java.util.Collection;
 
 import java.util.Date;
 
+import ptstemmer.Stemmer;
+
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
@@ -21,12 +23,14 @@ public class AnalisarInformacao {
 	private Date dtOcorrencia;
 	private GeoApiContext context;
 	private WordTokenizer tokenizer = new WordTokenizer();
+	private Stemmer stemmer;
 	
-	public AnalisarInformacao(String dsFato, String dsBairro, String dsDtOcorrencia, GeoApiContext context) {
+	public AnalisarInformacao(String dsFato, String dsBairro, String dsDtOcorrencia, GeoApiContext context, Stemmer stemmer) {
 		this.dsFato		= dsFato;
 		this.dsBairro	= dsBairro;
 		this.dsDtOcorrencia = dsDtOcorrencia;
 		this.context 	= context;
+		this.stemmer	= stemmer;
 	}
 
 	public void processar() throws Exception{
@@ -43,21 +47,54 @@ public class AnalisarInformacao {
 			setDsBairro(dsBairroAux);
 		}
 		
+		String dsLocalAux = "";
+		
 		if	((!dsBairroAnt.equalsIgnoreCase("")) &&
 			(dsBairroAnt.length() > 7) &&
 			(dsBairroAnt.indexOf("Bairro:") > 0)){
-			String dsLocalAux = dsBairroAnt.substring(6,dsBairroAnt.indexOf("Bairro:"));
+			dsLocalAux = dsBairroAnt.substring(6,dsBairroAnt.indexOf("Bairro:"));
 			dsLocalAux = dsLocalAux.replace(",", "");
-			dsLocalAux = dsLocalAux.replace("R.", "Rua");
-			dsLocalAux = dsLocalAux.replace("R:", "Rua");
-			dsLocalAux = dsLocalAux.replace(":", "");
-			dsLocalAux = dsLocalAux.replace(".", "");
+			
+			if	(dsLocalAux.equalsIgnoreCase("")){
+				dsLocalAux = getDsBairro();
+			}
+			
+			if	((dsLocalAux.indexOf("Av") <= 0) &&
+					(dsLocalAux.indexOf("Via") <= 0)){
+				dsLocalAux = dsLocalAux.replace("Rua", "");
+				dsLocalAux = dsLocalAux.replace("R.", "R");
+				dsLocalAux = dsLocalAux.replace("R:", "R");
+				dsLocalAux = dsLocalAux.replace(":", "");
+				dsLocalAux = dsLocalAux.replace(".", "");
+			}else{
+				dsLocalAux = dsLocalAux.replace("R.", "R ");
+				dsLocalAux = dsLocalAux.replace("R:", "R ");
+				dsLocalAux = dsLocalAux.replace(":", "");
+				dsLocalAux = dsLocalAux.replace(".", "");
+			}
+			
+			dsLocalAux = dsLocalAux.replace("Dr", "Doutor");
+			dsLocalAux = dsLocalAux.replace("Prof", "Professor");
+			dsLocalAux = dsLocalAux.replace("Exp", "Expressa");
+			dsLocalAux = dsLocalAux.replace("02 de", "2 de");
+			dsLocalAux = dsLocalAux.replace("Professoressor", "Professor");
+			
+			if	(dsLocalAux.indexOf("(") > 0){
+				dsLocalAux = dsLocalAux.substring(0,dsLocalAux.indexOf("(")-1); 
+			}
+			
+			if	(dsLocalAux.indexOf("/") > 0){
+				dsLocalAux = dsLocalAux.substring(0,dsLocalAux.indexOf("/")-1); 
+			}
+			
+			if	(dsLocalAux.indexOf("n°") > 0){
+				dsLocalAux = dsLocalAux.substring(0,dsLocalAux.indexOf("n°")-1); 
+			}
+			
+			dsLocalAux = dsLocalAux.split("\\–", -1)[0];
+			dsLocalAux = dsLocalAux.split(" - ")[0];
 			
 			setDsLocal(dsLocalAux);
-		}
-		
-		if	(getDsLocal().equalsIgnoreCase("")){
-			setDsLocal(getDsBairro());
 		}
 		
 		try {
@@ -65,6 +102,25 @@ public class AnalisarInformacao {
 				(!getDsLocal().equalsIgnoreCase("null"))){
 				buscarLongitudeLatitude(getDsLocal());
 			}
+			
+			setDsLocal(getDsLocal().replaceAll("[^\\p{ASCII}]",""));
+			String[] localArray = getDsLocal().trim().split("\\s");
+			int qtCaracteres = localArray.length; 
+			
+			while ((getLatitude() == 0) &&
+				(qtCaracteres > 2)){
+				setDsLocal("");
+				
+				for (int i = 0; i < qtCaracteres; i++) {
+					setDsLocal(getDsLocal() + localArray[i] +" ");
+				}
+				System.out.println(getDsLocal());				
+				buscarLongitudeLatitude(getDsLocal());
+				qtCaracteres--;
+			}
+			
+			
+			
 		} catch (Exception e) {
 			System.out.println(getDsLocal() + " - " + e.getMessage());
 		}
@@ -85,11 +141,14 @@ public class AnalisarInformacao {
 			setLatitude(geocodingResult.geometry.location.lat);
 			setLongitude(geocodingResult.geometry.location.lng);
 		}
+		
+		results = null;
+		
 	}
 	
 	public void montarDataOcorrencia(String dsDtOcorrencia) throws Exception{
 		int qtPassagens = 0;
-		Collection<Word> dataWords = tokenizer.getWords(dsDtOcorrencia);
+		Collection<Word> dataWords = tokenizer.getWords(dsDtOcorrencia,stemmer);
 		String nrDia = "";
 		String nrMes = "";
 		String nrAno = "";
@@ -111,6 +170,8 @@ public class AnalisarInformacao {
 			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 			dtOcorrencia = formato.parse(nrDia+"/"+nrMes+"/"+nrAno);
 		}
+		
+		dataWords.clear();
 	}
 	
 	private final static String getMesAno(String mes){
