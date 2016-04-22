@@ -11,19 +11,18 @@ import java.util.List;
 import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
-
 import br.com.furb.dao.ConnectionDB;
 import br.com.furb.model.AtividadePolicial;
+import br.com.furb.model.AtividadePolicialSisp;
 
-@WebServlet("/saegopBuscarPontos")
-public class BuscarDadosPontos extends HttpServlet {
+import com.google.gson.Gson;
 
-	@Override
+@WebServlet("/saegopBuscarPontosSisp")
+public class BuscarDadosPontosSisp {
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
 		
@@ -45,7 +44,7 @@ public class BuscarDadosPontos extends HttpServlet {
 			return;
 		}
 	
-		String sql = "FROM AtividadePolicial a where 1=1 " +
+		String sql = "FROM AtividadePolicialSisp a where 1=1 " +
 		" and a.dtOcorrencia between :dt_inicio and :dt_fim " +
 		" and a.latitude <> 0  and a.longitude <> 0";
 		
@@ -54,7 +53,7 @@ public class BuscarDadosPontos extends HttpServlet {
 		query.setParameter("dt_inicio", dtInicio);
 		query.setParameter("dt_fim",dtFim);
 		
-		List<AtividadePolicial> atividadePoliciais = query.getResultList();
+		List<AtividadePolicialSisp> atividadePoliciais = query.getResultList();
 		
 		String json = gson.toJson(atividadePoliciais);
 		PrintWriter out = response.getWriter();
