@@ -9,15 +9,14 @@ public class TestImpFileSisp {
 	public static void main(String[] args) {
 		
 		try {
-			File arquivo = new File("Relatorio_2016.csv");
-			if	(!arquivo.exists()){
-				System.out.println("Arquivo não existe");
-				System.exit(0);
-			}
 			
-			File[] arquivos = new File[1];
 			
-			arquivos[0] = arquivo;
+			File[] arquivos = new File[4];
+			
+			arquivos[0] = new File("Relatorio_2016.csv");
+			arquivos[1] = new File("Relatorio_2015.csv");
+			arquivos[2] = new File("Relatorio_2014.csv");
+			arquivos[2] = new File("Relatorio_2013.csv");
 			
 			ImportarFileSisp importSisp = new ImportarFileSisp();
 			importSisp.importarArquivosSisp(arquivos);

@@ -49,22 +49,31 @@ public class ImportarFileSisp {
 
 			while ((line = br.readLine()) != null) {
 
-				String[] info = line.split(separador);
 				AtividadePolicialSisp atividadeSisp = new AtividadePolicialSisp();
-				atividadeSisp.setDsBairro(info[2]);
-				atividadeSisp.setDsEndereco(info[3]);
-				atividadeSisp.setHrOcorrencia(info[5]);
-				atividadeSisp.setDsTipificacao(info[6]);
+				
+				try {
+					String[] info = line.split(separador);
+					atividadeSisp.setDsBairro(info[2]);
+					atividadeSisp.setDsEndereco(info[3]);
+					atividadeSisp.setHrOcorrencia(info[5]);
+					atividadeSisp.setDsTipificacao(info[6]);
 
-				if (!info[4].equalsIgnoreCase("")) {
+					if (!info[4].equalsIgnoreCase("")) {
 
-					Calendar dtOcorrenciaCal = Calendar.getInstance();
-					Date dtOcorrencia = formato.parse(info[4]);
-					dtOcorrenciaCal.setTime(dtOcorrencia);
-					atividadeSisp.setDtOcorrencia(dtOcorrenciaCal);
+						Calendar dtOcorrenciaCal = Calendar.getInstance();
+						Date dtOcorrencia = formato.parse(info[4]);
+						dtOcorrenciaCal.setTime(dtOcorrencia);
+						atividadeSisp.setDtOcorrencia(dtOcorrenciaCal);
+					}
+					
+					listaAtividade.add(atividadeSisp);
+					
+				} catch (Exception e) {
+					atividadeSisp = null;
 				}
-
-				listaAtividade.add(atividadeSisp);
+				
+				
+				
 			}
 			
 			Map<String, double[]> localMap = new HashMap<String, double[]>();
