@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,8 +22,9 @@ import br.com.furb.model.AtividadePolicialSisp;
 import com.google.gson.Gson;
 
 @WebServlet("/saegopBuscarPontosSisp")
-public class BuscarDadosPontosSisp {
+public class BuscarDadosPontosSisp extends HttpServlet {
 	
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
 		

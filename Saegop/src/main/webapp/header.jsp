@@ -24,8 +24,8 @@
         	</div>
         	<div id="navbar" class="navbar-collapse collapse">
           		<ul class="nav navbar-nav navbar-right">
-	            	<li><a href="#">Ocorrência SISP(Pontos)</a></li>
-	            	<li><a href="#">Ocorrência SISP(Mapa de calor)</a></li>
+	            	<li><a href="#">SISP(Pontos)</a></li>
+	            	<li><a href="telaConsultaOcorrHeatSisp.jsp">SISP(Mapa de calor)</a></li>
 	            	<li><a href="telaConsultaOcorrencias.jsp">Ocorrência Sala de Notícias(Pontos)</a></li>
 	            	<li><a href="telaConsultaOcorrHeats.jsp">Ocorrência Sala de Notícias(Mapa de calor)</a></li>
           		</ul>

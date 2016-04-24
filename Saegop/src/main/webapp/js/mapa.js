@@ -3,6 +3,22 @@ var markers = [];
 var geocoder;
 var heatmaps = [];
 
+var gradient = [
+                'rgba(0, 255, 255, 0)',
+                'rgba(0, 255, 255, 1)',
+                'rgba(0, 191, 255, 1)',
+                'rgba(0, 127, 255, 1)',
+                'rgba(0, 63, 255, 1)',
+                'rgba(0, 0, 255, 1)',
+                'rgba(0, 0, 223, 1)',
+                'rgba(0, 0, 191, 1)',
+                'rgba(0, 0, 159, 1)',
+                'rgba(0, 0, 127, 1)',
+                'rgba(63, 0, 91, 1)',
+                'rgba(127, 0, 63, 1)',
+                'rgba(191, 0, 31, 1)',
+                'rgba(255, 0, 0, 1)'];
+
 geocoder = new google.maps.Geocoder();
  
 function initialize() {
@@ -65,6 +81,52 @@ $('#buscarDadosHeats').on('click', function (e) {
 
 })
 
+$('#buscarDadosHeatsSisp').on('click', function (e) {
+	
+	dtInicio = document.getElementById("dtInicio");
+	dtFim = document.getElementById("dtFim");
+	var patternData = /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/;
+
+	if (dtInicio.value == ""){
+		alert ('Obrigatório informar a data de inicio');    
+		document.getElementById("dtInicio").focus();
+		return false;
+	}
+
+	if(!patternData.test(dtInicio.value)){
+	    alert("Digite a data no formato Dia/Mês/Ano");
+	    document.getElementById("dtInicio").focus();
+	    return false;
+	}
+	
+	if (dtFim.value == ""){
+		alert ('Obrigatório informar a data de inicio');    
+		document.getElementById("dtFim").focus();
+		return false;
+	}
+	
+	if(!patternData.test(dtFim.value)){
+	    alert("Digite a data no formato Dia/Mês/Ano");
+	    document.getElementById("dtFim").focus();
+	    return false;
+	}
+	
+	$.ajax({
+        url: "saegopBuscarPontosSisp",
+        type: 'POST',
+        data: {'dt-inicio' : dtInicio.value, 'dt-fim' : dtFim.value},
+        dataType: "json",
+        success: function (data) { 
+        	carregarHeats(data);
+        	return false;
+        },
+        error:function(data,status,er) {
+            alert("error: "+data+" status: "+status+" er:"+er);
+        }
+    });
+
+})
+
 function carregarHeats(pontosJson) {
 	
 	var pointsPosition = [];
@@ -77,10 +139,12 @@ function carregarHeats(pontosJson) {
 	});
 	
 	var heatmap = new google.maps.visualization.HeatmapLayer({
+		maxIntensity: 100,
 		data: pointsPosition
 	});
 	
-	heatmap.set('radius', heatmap.get('radius') ? null : 20);
+	heatmap.set('radius', heatmap.get('radius') ? null : 50);
+	heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
 	
 	heatmaps.push(heatmap);
 	heatmap.setMap(map);

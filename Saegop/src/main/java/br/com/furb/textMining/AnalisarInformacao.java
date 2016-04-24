@@ -144,6 +144,7 @@ public class AnalisarInformacao {
 		for (GeocodingResult geocodingResult : results) {
 			setLatitude(geocodingResult.geometry.location.lat);
 			setLongitude(geocodingResult.geometry.location.lng);
+			break;
 		}
 
 		results = null;
