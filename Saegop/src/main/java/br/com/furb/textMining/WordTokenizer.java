@@ -14,7 +14,8 @@ public class WordTokenizer {
 	public Collection<Word> getWords(String value, Stemmer stemmer) throws Exception {
 		
 		String temp = Normalizer.normalize(value, Normalizer.Form.NFKD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");   
-		value = temp.replaceAll("[^\\p{ASCII}]",""); 
+		value = temp.replaceAll("[^\\p{ASCII}]"," "); 
+		value = temp.replaceAll("[\\p{Punct}]"," ");
 		
 		String[] wordStrs = value.split("\\s");
 
@@ -28,7 +29,8 @@ public class WordTokenizer {
 					word = word.replace(",", "");
 					word = word.replace(")", "");
 					word = word.replace("(", "");
-					word = word.replace("/", "");
+					word = word.replace("“", "");
+					word = word.replace("”", "");
 					words.add(new Word(stemmer.getWordStem(word)));
 				}
 				

@@ -19,7 +19,7 @@ public class TestClassificacao {
 		try {
 			ConnectionDB conection = new ConnectionDB();
 			
-			String sql = "FROM AtividadePolicial a where length(dsFato) > 10 ";
+			String sql = "FROM AtividadePolicial a where length(dsFato) > 40 ";
 					
 			Query query = conection.getManager().createQuery(sql);
 			
@@ -41,7 +41,13 @@ public class TestClassificacao {
 				
 				String itemAnalisado = analisar.classificarOcorrencia(atividadePolicial.getDsFato());
 				
-				writter.write(itemAnalisado+";"+atividadePolicial.getDsFato()+"\n");
+				String[] itemAnalisadoQuebra = itemAnalisado.split(";");
+				
+				if	(itemAnalisadoQuebra[2].equalsIgnoreCase("nao-identifi") || itemAnalisadoQuebra[1].equalsIgnoreCase("nao-identifi") ){
+					writter.write(itemAnalisado+";"+atividadePolicial.getDsFato()+"\n");
+				}
+				
+				
 				
 			}
 			System.out.println("FIM");

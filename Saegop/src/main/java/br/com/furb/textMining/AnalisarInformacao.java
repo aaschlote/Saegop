@@ -22,7 +22,7 @@ public class AnalisarInformacao {
 	private GeoApiContext context;
 	private WordTokenizer tokenizer = new WordTokenizer();
 	private Stemmer stemmer;
-	private String[] acao = {"nao-identifi","nao-identifi"};
+	private String[] acao = {"nao-identifi","nao-identifi"," "};
 
 	public AnalisarInformacao(String dsFato, String dsBairro,
 			String dsDtOcorrencia, GeoApiContext context, Stemmer stemmer) {
@@ -230,13 +230,25 @@ public class AnalisarInformacao {
 				}
 				continue;
 			}
+			
+			if	((qtPassagens == 2) && 
+				(obterSeVerificaObjeto(acao[1]))) {
+				
+				acao[qtPassagens] = "nao-identifi";
+				
+				if	(obterObjetoPolicial(word.toString())){
+					acao[qtPassagens] = word.toString();
+					break;
+				}
+				continue;
+			}
 		}
 		
-		return acao[0]+";"+acao[1];
+		return acao[0]+";"+acao[1]+";"+acao[2];
 	}
 	
 	
-	public boolean obterAcaoPolicial(String acao){
+	private boolean obterAcaoPolicial(String acao){
 		return acao.equalsIgnoreCase("foi") ||
 				acao.equalsIgnoreCase("auxili") ||
 				acao.equalsIgnoreCase("atend") ||
@@ -245,10 +257,13 @@ public class AnalisarInformacao {
 				acao.equalsIgnoreCase("efetu") ||
 				acao.equalsIgnoreCase("registr") ||
 				acao.equalsIgnoreCase("prest") ||
+				acao.equalsIgnoreCase("denunc") ||
+				acao.equalsIgnoreCase("receb") ||
+				acao.equalsIgnoreCase("recuper") ||
 				acao.equalsIgnoreCase("abord");
 	}
 	
-	public boolean obterCrimePolicial(String acao){
+	private boolean obterCrimePolicial(String acao){
 		return acao.equalsIgnoreCase("furt") ||
 				acao.equalsIgnoreCase("furto") ||
 				acao.equalsIgnoreCase("assalt") ||
@@ -256,14 +271,59 @@ public class AnalisarInformacao {
 				acao.equalsIgnoreCase("perturb") ||
 				acao.equalsIgnoreCase("traf") ||
 				acao.equalsIgnoreCase("agred") ||
-				acao.equalsIgnoreCase("pris") ||
-				acao.equalsIgnoreCase("prisa") ||
+				acao.equalsIgnoreCase("mand") ||
 				acao.equalsIgnoreCase("arromb") ||
 				acao.equalsIgnoreCase("homicidi") ||
 				acao.equalsIgnoreCase("embriagu") ||
 				acao.equalsIgnoreCase("agressa") ||
 				acao.equalsIgnoreCase("port") ||
+				acao.equalsIgnoreCase("forag") ||
+				acao.equalsIgnoreCase("perturbaca") ||
+				acao.equalsIgnoreCase("dispar") ||
+				acao.equalsIgnoreCase("encontr") ||
+				acao.equalsIgnoreCase("estupr") ||
+				acao.equalsIgnoreCase("fer") ||
+				acao.equalsIgnoreCase("desfer") ||
+				acao.equalsIgnoreCase("corpor") ||
+				acao.equalsIgnoreCase("estelionato") ||
+				acao.equalsIgnoreCase("esfaque") ||
+				acao.equalsIgnoreCase("nota") ||
+				acao.equalsIgnoreCase("possu") ||
+				acao.equalsIgnoreCase("substanc") ||
 				acao.equalsIgnoreCase("poss");
+	}
+	
+	private boolean obterObjetoPolicial(String acao){
+		return acao.equalsIgnoreCase("maconh") ||
+				acao.equalsIgnoreCase("drog") ||
+				acao.equalsIgnoreCase("crack") ||
+				acao.equalsIgnoreCase("arm") ||
+				acao.equalsIgnoreCase("cocain") ||
+				acao.equalsIgnoreCase("veicul") ||
+				acao.equalsIgnoreCase("mot") ||
+				acao.equalsIgnoreCase("motociclet") ||
+				acao.equalsIgnoreCase("pris") ||
+				acao.equalsIgnoreCase("prisa") ||
+				acao.equalsIgnoreCase("apreensa") ||
+				acao.equalsIgnoreCase("pistol") ||
+				acao.equalsIgnoreCase("revolv") ||
+				acao.equalsIgnoreCase("pedr") ||
+				acao.equalsIgnoreCase("entorpec") ||
+				acao.equalsIgnoreCase("cadav") ||
+				acao.equalsIgnoreCase("falsa") ||
+				acao.equalsIgnoreCase("embriag") ||
+				acao.equalsIgnoreCase("obit") ||
+				acao.equalsIgnoreCase("carr");
+	}
+	
+	private boolean obterSeVerificaObjeto(String acaoPolicial){
+		return acaoPolicial.equalsIgnoreCase("encontr") ||
+				acaoPolicial.equalsIgnoreCase("poss") ||
+				acaoPolicial.equalsIgnoreCase("possu") ||
+				acaoPolicial.equalsIgnoreCase("substanc") ||
+				acaoPolicial.equalsIgnoreCase("mand") ||
+				acaoPolicial.equalsIgnoreCase("nota") ||
+				acaoPolicial.equalsIgnoreCase("port");
 	}
 
 	public String getDsFato() {
