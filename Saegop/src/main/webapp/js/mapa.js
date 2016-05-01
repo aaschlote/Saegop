@@ -139,11 +139,11 @@ function carregarHeats(pontosJson) {
 	});
 	
 	var heatmap = new google.maps.visualization.HeatmapLayer({
-		maxIntensity: 100,
+		maxIntensity: 50,
 		data: pointsPosition
 	});
 	
-	heatmap.set('radius', heatmap.get('radius') ? null : 50);
+	heatmap.set('radius', heatmap.get('radius') ? null : 20);
 	heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
 	
 	heatmaps.push(heatmap);

@@ -2,7 +2,6 @@ package br.com.furb.textMining;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;
-
 import java.util.Date;
 
 import ptstemmer.Stemmer;
@@ -23,6 +22,7 @@ public class AnalisarInformacao {
 	private GeoApiContext context;
 	private WordTokenizer tokenizer = new WordTokenizer();
 	private Stemmer stemmer;
+	private String[] acao = {"nao-identifi","nao-identifi"};
 
 	public AnalisarInformacao(String dsFato, String dsBairro,
 			String dsDtOcorrencia, GeoApiContext context, Stemmer stemmer) {
@@ -206,6 +206,64 @@ public class AnalisarInformacao {
 			return "12";
 		}
 		return "";
+	}
+	
+	public String classificarOcorrencia(String dsFato) throws Exception {
+		Collection<Word> words = tokenizer
+				.getWords(dsFato, stemmer);
+		
+		int qtPassagens = 0;
+		
+		for (Word word : words) {
+			if	(qtPassagens == 0){
+				if	(obterAcaoPolicial(word.toString())){
+					acao[qtPassagens] = word.toString();
+					qtPassagens++;
+				}
+				continue;
+			}
+			
+			if	(qtPassagens == 1){
+				if	(obterCrimePolicial(word.toString())){
+					acao[qtPassagens] = word.toString();
+					qtPassagens++;
+				}
+				continue;
+			}
+		}
+		
+		return acao[0]+";"+acao[1];
+	}
+	
+	
+	public boolean obterAcaoPolicial(String acao){
+		return acao.equalsIgnoreCase("foi") ||
+				acao.equalsIgnoreCase("auxili") ||
+				acao.equalsIgnoreCase("atend") ||
+				acao.equalsIgnoreCase("prend") ||
+				acao.equalsIgnoreCase("apreend") ||
+				acao.equalsIgnoreCase("efetu") ||
+				acao.equalsIgnoreCase("registr") ||
+				acao.equalsIgnoreCase("prest") ||
+				acao.equalsIgnoreCase("abord");
+	}
+	
+	public boolean obterCrimePolicial(String acao){
+		return acao.equalsIgnoreCase("furt") ||
+				acao.equalsIgnoreCase("furto") ||
+				acao.equalsIgnoreCase("assalt") ||
+				acao.equalsIgnoreCase("roub") ||
+				acao.equalsIgnoreCase("perturb") ||
+				acao.equalsIgnoreCase("traf") ||
+				acao.equalsIgnoreCase("agred") ||
+				acao.equalsIgnoreCase("pris") ||
+				acao.equalsIgnoreCase("prisa") ||
+				acao.equalsIgnoreCase("arromb") ||
+				acao.equalsIgnoreCase("homicidi") ||
+				acao.equalsIgnoreCase("embriagu") ||
+				acao.equalsIgnoreCase("agressa") ||
+				acao.equalsIgnoreCase("port") ||
+				acao.equalsIgnoreCase("poss");
 	}
 
 	public String getDsFato() {
