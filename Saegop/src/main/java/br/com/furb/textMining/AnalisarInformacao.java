@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import ptstemmer.Stemmer;
+import br.com.furb.model.NaturezaOcorrencia;
 
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
@@ -208,7 +209,7 @@ public class AnalisarInformacao {
 		return "";
 	}
 	
-	public String classificarOcorrencia(String dsFato) throws Exception {
+	public NaturezaOcorrencia classificarOcorrencia(String dsFato) throws Exception {
 		Collection<Word> words = tokenizer
 				.getWords(dsFato, stemmer);
 		
@@ -244,7 +245,7 @@ public class AnalisarInformacao {
 			}
 		}
 		
-		return acao[0]+";"+acao[1]+";"+acao[2];
+		return new ClassificacaoNatureza().getNaturezaOcorrencia(acao,dsFato);
 	}
 	
 	
@@ -285,9 +286,9 @@ public class AnalisarInformacao {
 				acao.equalsIgnoreCase("fer") ||
 				acao.equalsIgnoreCase("desfer") ||
 				acao.equalsIgnoreCase("corpor") ||
-				acao.equalsIgnoreCase("estelionato") ||
+				acao.equalsIgnoreCase("estelionat") ||
 				acao.equalsIgnoreCase("esfaque") ||
-				acao.equalsIgnoreCase("nota") ||
+				acao.equalsIgnoreCase("not") ||
 				acao.equalsIgnoreCase("possu") ||
 				acao.equalsIgnoreCase("substanc") ||
 				acao.equalsIgnoreCase("poss");
@@ -310,7 +311,7 @@ public class AnalisarInformacao {
 				acao.equalsIgnoreCase("pedr") ||
 				acao.equalsIgnoreCase("entorpec") ||
 				acao.equalsIgnoreCase("cadav") ||
-				acao.equalsIgnoreCase("falsa") ||
+				acao.equalsIgnoreCase("fals") ||
 				acao.equalsIgnoreCase("embriag") ||
 				acao.equalsIgnoreCase("obit") ||
 				acao.equalsIgnoreCase("carr");
@@ -322,7 +323,7 @@ public class AnalisarInformacao {
 				acaoPolicial.equalsIgnoreCase("possu") ||
 				acaoPolicial.equalsIgnoreCase("substanc") ||
 				acaoPolicial.equalsIgnoreCase("mand") ||
-				acaoPolicial.equalsIgnoreCase("nota") ||
+				acaoPolicial.equalsIgnoreCase("not") ||
 				acaoPolicial.equalsIgnoreCase("port");
 	}
 

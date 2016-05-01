@@ -1,64 +1,36 @@
 package br.com.furb.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-/**
- * 
- * @author Alex
- * 1 - Arrombamento
- * 2 - Assalto
- * 3 - Tráfico
- * 4 - Estupro
- * 5 - Furto
- * 6 - Homicidio
- * 7 - Lesão Corporal/Agressão
- * 8 - Perturbação
- * 9 - Porte de arma
- * 10 - Porte de drogas
- * 11 - Roubo
- * 12 - Encontrou veiculo roubado/furtado
- * 13 - Disparo de arma de fogo
- * 14 - Embriaguez
- * 15 - Estelionato
- * 16 - Prisão de foragido
- * 17 - Mandato de prisão
- * 18 - Nota falsa
- * 19 - Encontro de cadáver humano
- * 20 - Não identificado
- * 
- */
-
-@Entity
-@Table(name = "Natureza_Ocorrencia")
-public class NaturezaOcorrencia {
+public enum NaturezaOcorrencia {
 	
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue
-	private Long id;
+	ARROMBAMENTO(1),
+	ASSALTO(2),
+	TRAFICO(3),
+	ESTUPRO(4),
+	FURTO(5),
+	HOMICIDIO(6),
+	LESAO_CORPORAL_AGRESSAO(7),
+	PERTUBACAO(8),
+	PORTE_ARMA(9),
+	PORTE_DROGAS(10),
+	ROUBO(11),
+	ENCONTRADO_VEICULO_ROUBADADO(12),
+	DISPARO_ARMA_FOGO(13),
+	EMBRIAGUEZ(14),
+	ESTELIONATO(15),
+	PRISAO_FORAGIDO(16),
+	MANDATO_PRISAO(17),
+	NOTA_FALSA(18),
+	ENCONTRADO_CADAVER_HUMANO(19),
+	NAO_IDENTIFICADO(20);
 	
-	@Column(name = "DS_NATUREZA")
-	private String dsNatureza;
-
-	public Long getId() {
-		return id;
+	private int idNatureza;
+	
+	private NaturezaOcorrencia(int idNatureza) {
+		this.idNatureza = idNatureza;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getDsNatureza() {
-		return dsNatureza;
-	}
-
-	public void setDsNatureza(String dsNatureza) {
-		this.dsNatureza = dsNatureza;
+	public int getNivel() {
+		return idNatureza;
 	}
 
 }

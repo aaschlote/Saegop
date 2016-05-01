@@ -30,7 +30,7 @@ public class StopWords {
 			"inclusive", "também", "mesmo", "ainda", "at�", "ademais", "al�m disso", "de",
 			"mais a mais", "sã", "apenas, � que", "sobretudo", "embora", "aliás", "ou",
 			"melhor", "isto �, ou antes", "a saber, por exemplo", "ou seja", "afinal",
-			"do", "da", "policia", "militar", "fato:", "no", "na","mas", "ocorrencia", "porta"};
+			"do", "da", "policia", "militar", "fato:", "no", "na","mas", "ocorrencia", "porta", "portas"};
 
 	private HashSet<String> stopWords;
 

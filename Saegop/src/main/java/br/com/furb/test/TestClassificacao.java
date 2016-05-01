@@ -1,7 +1,5 @@
 package br.com.furb.test;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -27,31 +25,25 @@ public class TestClassificacao {
 			
 			Stemmer stemmer = new OrengoStemmer();
 			
-			File arquivo = new File("DADOS_OCORR.txt");
 			
-			if	(arquivo.exists()){
-				arquivo.delete();
-			}
-			arquivo.createNewFile();
-			
-			FileWriter writter = new FileWriter(arquivo);
 			
 			for (AtividadePolicial atividadePolicial : atividadePoliciais) {
 				AnalisarInformacao analisar = new AnalisarInformacao("", "", "", null, stemmer);
 				
-				String itemAnalisado = analisar.classificarOcorrencia(atividadePolicial.getDsFato());
-				
-				String[] itemAnalisadoQuebra = itemAnalisado.split(";");
-				
-				if	(itemAnalisadoQuebra[2].equalsIgnoreCase("nao-identifi") || itemAnalisadoQuebra[1].equalsIgnoreCase("nao-identifi") ){
-					writter.write(itemAnalisado+";"+atividadePolicial.getDsFato()+"\n");
-				}
-				
-				
+				atividadePolicial.setNaturezaOcorrencia(analisar.classificarOcorrencia(atividadePolicial.getDsFato()));								
 				
 			}
+			
+			conection.getManager().getTransaction().begin();
+			
+			for (AtividadePolicial atividadePolicial : atividadePoliciais) {
+				conection.getManager().merge(atividadePolicial);
+			}
+			
+			conection.getManager().getTransaction().commit();
+			
 			System.out.println("FIM");
-			writter.close();
+			
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
