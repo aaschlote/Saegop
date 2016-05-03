@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.enterprise.inject.spi.InterceptionType;
 import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +20,7 @@ import com.google.gson.Gson;
 
 import br.com.furb.dao.ConnectionDB;
 import br.com.furb.model.AtividadePolicial;
+import br.com.furb.model.NaturezaOcorrencia;
 
 @WebServlet("/saegopBuscarPontos")
 public class BuscarDadosPontos extends HttpServlet {
@@ -36,6 +38,12 @@ public class BuscarDadosPontos extends HttpServlet {
 		
 		Calendar dtInicio;
 		Calendar dtFim;
+		
+		NaturezaOcorrencia natureza = null;
+		
+		if	(!request.getParameter("id-Crime").equalsIgnoreCase("")){
+			natureza = NaturezaOcorrencia.getNatureza(Integer.parseInt(request.getParameter("id-Crime")));
+		}
 
 		try {
 			dtInicio = getData(request.getParameter("dt-inicio"));
@@ -44,15 +52,26 @@ public class BuscarDadosPontos extends HttpServlet {
 			e.printStackTrace();
 			return;
 		}
+		
+		String sqlNatureza = "";
+		
+		if	(natureza != null){
+			sqlNatureza = " and a.naturezaOcorrencia = :natureza";
+		}
 	
 		String sql = "FROM AtividadePolicial a where 1=1 " +
 		" and a.dtOcorrencia between :dt_inicio and :dt_fim " +
-		" and a.latitude <> 0  and a.longitude <> 0";
+		" and a.latitude <> 0  and a.longitude <> 0" +
+		sqlNatureza;
 		
 		Query query = conection.getManager().createQuery(sql);
 		
 		query.setParameter("dt_inicio", dtInicio);
 		query.setParameter("dt_fim",dtFim);
+		
+		if	(!sqlNatureza.equalsIgnoreCase("")){
+			query.setParameter("natureza", natureza);
+		}
 		
 		List<AtividadePolicial> atividadePoliciais = query.getResultList();
 		

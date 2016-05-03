@@ -1,3 +1,6 @@
+<%@page import="java.util.Arrays"%>
+<%@page import="br.com.furb.model.NaturezaOcorrencia"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -28,6 +31,18 @@
 		        	
 		        	<label>Data fim:</label>
 		        	<input type="text" id="dtFim" style=" width: 120px;" >
+		        	
+		        	<p> </p>
+		        	
+		        	<select class="form-control" id="idCrime">
+						<option value=""  selected>Crimes</option>
+						<%
+						List<NaturezaOcorrencia> naturezas = Arrays.asList(NaturezaOcorrencia.values());
+							for (NaturezaOcorrencia naturza : naturezas) {
+								out.print("<option value='" + naturza.getNatureza() + "'>" + naturza.toString() + "</option>");
+							}
+						%>
+					</select>
 		        	
 		        	<p> </p>
 		        	

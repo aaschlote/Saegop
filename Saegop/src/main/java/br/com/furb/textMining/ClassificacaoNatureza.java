@@ -74,7 +74,6 @@ public class ClassificacaoNatureza {
 				return NaturezaOcorrencia.PORTE_DROGAS;
 
 			default:
-				System.out.println("1 - " + objetoPolicial + "\n" + dsFato);
 				return NaturezaOcorrencia.NAO_IDENTIFICADO;
 			}
 
@@ -103,7 +102,6 @@ public class ClassificacaoNatureza {
 				return NaturezaOcorrencia.ENCONTRADO_VEICULO_ROUBADADO;
 
 			default:
-				System.out.println("2 - " + objetoPolicial);
 				return NaturezaOcorrencia.NAO_IDENTIFICADO;
 			}
 
@@ -149,7 +147,6 @@ public class ClassificacaoNatureza {
 				return NaturezaOcorrencia.ENCONTRADO_VEICULO_ROUBADADO;
 
 			default:
-				System.out.println("4 - " + objetoPolicial + "\n" + dsFato);
 				return NaturezaOcorrencia.NAO_IDENTIFICADO;
 			}
 
@@ -186,7 +183,6 @@ public class ClassificacaoNatureza {
 				return NaturezaOcorrencia.MANDATO_PRISAO;
 
 			default:
-				System.out.println("5 - " + objetoPolicial);
 				return NaturezaOcorrencia.NAO_IDENTIFICADO;
 			}
 			

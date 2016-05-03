@@ -193,7 +193,7 @@ $('#buscarDadosPontos').on('click', function (e) {
 	$.ajax({
         url: "saegopBuscarPontos",
         type: 'POST',
-        data: {'dt-inicio' : dtInicio.value, 'dt-fim' : dtFim.value},
+        data: {'dt-inicio' : dtInicio.value, 'dt-fim' : dtFim.value, 'id-Crime' : document.getElementById("idCrime").value},
         dataType: "json",
         success: function (data) { 
         	carregarPontos(data);
