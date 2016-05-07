@@ -3,6 +3,8 @@ var markers = [];
 var geocoder;
 var heatmaps = [];
 
+var legendas;
+
 var gradient = [
                 'rgba(0, 255, 255, 0)',
                 'rgba(0, 255, 255, 1)',
@@ -31,6 +33,10 @@ function initialize() {
     };
  
     map = new google.maps.Map(document.getElementById("mapa"), options);
+    
+    popularLegendaObjetos();
+     
+        
 }
 
 initialize();
@@ -68,7 +74,7 @@ $('#buscarDadosHeats').on('click', function (e) {
 	$.ajax({
         url: "saegopBuscarPontos",
         type: 'POST',
-        data: {'dt-inicio' : dtInicio.value, 'dt-fim' : dtFim.value},
+        data: {'dt-inicio' : dtInicio.value, 'dt-fim' : dtFim.value, 'id-Crime' : document.getElementById("idCrime").value},
         dataType: "json",
         success: function (data) { 
         	carregarHeats(data);
@@ -237,10 +243,14 @@ function carregarPontos(pontosJson) {
 			    maxWidth: 350
 			  });
 			
+			var natureza = ponto.naturezaOcorrencia;
+			
+			var icone = ''+obterIconeLegenda(natureza)+'';
+			
 			var marker = new google.maps.Marker({
                 position: new google.maps.LatLng(ponto.latitude, ponto.longitude),
                 map: map,
-                icon: 'img/marcador.png'
+                icon: icone
             });
 			
 			google.maps.event.addListener(marker, 'click', function() {
@@ -286,6 +296,32 @@ function carregarPontos(pontosJson) {
  
         });
 
+}
+
+function obterIconeLegenda(dsFato){
+	
+	var file = "img/nao_encontrado.png";
+	
+ 
+    $.each(legendas, function(index2, legenda) {
+    	if	(legenda.nomeEnum == dsFato){
+    		file =  legenda.file;
+    	}
+    });
+
+return file;
+	
+}
+
+function popularLegendaObjetos(){
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'json/legendas.json');
+    xhr.send();
+    xhr.onreadystatechange=function(){
+        if (xhr.readyState==4 && xhr.status==200){
+        	legendas = JSON.parse(xhr.responseText);
+        }
+    }
 }
 
 function setMapOnAll(map) {

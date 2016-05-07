@@ -1,3 +1,6 @@
+<%@page import="java.util.Arrays"%>
+<%@page import="br.com.furb.model.NaturezaOcorrencia"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -31,6 +34,18 @@
 		        	
 		        	<p> </p>
 		        	
+		        	<select class="form-control" id="idCrime">
+						<option value=""  selected>Crimes</option>
+						<%
+						List<NaturezaOcorrencia> naturezas = Arrays.asList(NaturezaOcorrencia.values());
+							for (NaturezaOcorrencia naturza : naturezas) {
+								out.print("<option value='" + naturza.getNatureza() + "'>" + naturza.toString() + "</option>");
+							}
+						%>
+					</select>
+		        	
+		        	<p> </p>
+		        	
 		        	<div style="text-align: center">
 	        			<button class="btn btn-lg btn-primary btn-block"
 							id="buscarDadosHeats" >Buscar dados
@@ -44,7 +59,6 @@
 			          	</div>
 			          	<!-- Maps API Javascript -->
 			        	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmBHVNZkiSU8JyL16GF85EGE8qv3D42HM&libraries=visualization&sensor=true_or_false"></script>
-			        	
 			        	
 					</div>				        			          		
 		         </div>

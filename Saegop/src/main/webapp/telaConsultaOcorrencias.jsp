@@ -51,6 +51,13 @@
 							id="buscarDadosPontos" >Buscar dados
 						</button>
 					</div>
+					
+					<p> </p>
+					
+					<div  id="legend" >
+  							Legenda
+					</div>
+					
 	        	</div>
 		        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		         	<h1 class="page-header">Mapa de ocorrências</h1>
@@ -97,7 +104,20 @@
     		document.getElementById('dtInicio').value = '01/'+ mes+'/'+ ano;
     		document.getElementById('dtFim').value = dia+'/'+ mes+'/'+ ano;
     		
+    		var legend = document.getElementById('legend');
+    	    
+    	    $.getJSON('json/legendas.json', function(pontos) {
+    	    	 
+    	        $.each(pontos, function(index, ponto) {
+    	        	var div = document.createElement('div');
+    	      	  	div.innerHTML = '<img src="' + ponto.file + '"> '+ ponto.nomePublico;
+    	      	  	legend.appendChild(div);
+    	        });
+    	        
+    	    });
+    		
     	});
+    	
     
     </script>
 
