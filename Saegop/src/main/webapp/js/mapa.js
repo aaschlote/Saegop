@@ -120,7 +120,7 @@ $('#buscarDadosHeatsSisp').on('click', function (e) {
 	$.ajax({
         url: "saegopBuscarPontosSisp",
         type: 'POST',
-        data: {'dt-inicio' : dtInicio.value, 'dt-fim' : dtFim.value},
+        data: {'dt-inicio' : dtInicio.value, 'dt-fim' : dtFim.value, 'id-Crime' : document.getElementById("idCrime").value},
         dataType: "json",
         success: function (data) { 
         	carregarHeats(data);

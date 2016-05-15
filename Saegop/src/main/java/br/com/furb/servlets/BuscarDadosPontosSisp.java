@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.furb.dao.ConnectionDB;
-import br.com.furb.model.AtividadePolicial;
 import br.com.furb.model.AtividadePolicialSisp;
+import br.com.furb.model.NaturezaOcorrenciaSisp;
 
 import com.google.gson.Gson;
 
@@ -37,6 +37,12 @@ public class BuscarDadosPontosSisp extends HttpServlet {
 		
 		Calendar dtInicio;
 		Calendar dtFim;
+		
+		NaturezaOcorrenciaSisp natureza = null;
+		
+		if	(!request.getParameter("id-Crime").equalsIgnoreCase("")){
+			natureza = NaturezaOcorrenciaSisp.getNatureza(Integer.parseInt(request.getParameter("id-Crime")));
+		}
 
 		try {
 			dtInicio = getData(request.getParameter("dt-inicio"));
@@ -45,15 +51,26 @@ public class BuscarDadosPontosSisp extends HttpServlet {
 			e.printStackTrace();
 			return;
 		}
-	
+		
+		String sqlNatureza = "";
+		
+		if	(natureza != null){
+			sqlNatureza = " and a.naturezaOcorrenciaSisp = :natureza";
+		}
+		
 		String sql = "FROM AtividadePolicialSisp a where 1=1 " +
 		" and a.dtOcorrencia between :dt_inicio and :dt_fim " +
-		" and a.latitude <> 0  and a.longitude <> 0";
+		" and a.latitude <> 0  and a.longitude <> 0"+
+		sqlNatureza;
 		
 		Query query = conection.getManager().createQuery(sql);
 		
 		query.setParameter("dt_inicio", dtInicio);
 		query.setParameter("dt_fim",dtFim);
+		
+		if	(!sqlNatureza.equalsIgnoreCase("")){
+			query.setParameter("natureza", natureza);
+		}
 		
 		List<AtividadePolicialSisp> atividadePoliciais = query.getResultList();
 		

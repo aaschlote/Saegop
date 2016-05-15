@@ -41,7 +41,7 @@ public enum NaturezaOcorrencia {
 	      case ESTUPRO: return "Estupro";
 	      case FURTO: return "Furto";
 	      case HOMICIDIO: return "Homicído";
-	      case LESAO_CORPORAL_AGRESSAO: return "Lesçao Corporal/Agressão";
+	      case LESAO_CORPORAL_AGRESSAO: return "Lesão Corporal/Agressão";
 	      case PERTUBACAO: return "Pertubação";
 	      case PORTE_ARMA: return "Porte de Arma";
 	      case PORTE_DROGAS: return "Porte de Drogas";
@@ -54,7 +54,7 @@ public enum NaturezaOcorrencia {
 	      case MANDATO_PRISAO: return "Mandato de prisão";
 	      case NOTA_FALSA: return "Pagamento com moeda falsa";
 	      case ENCONTRADO_CADAVER_HUMANO: return "Encontrado cadáver humano";
-	      case NAO_IDENTIFICADO: return "Arrombamento";
+	      case NAO_IDENTIFICADO: return "Não identificado";
 	      
 	      default: throw new IllegalArgumentException();
 	    }

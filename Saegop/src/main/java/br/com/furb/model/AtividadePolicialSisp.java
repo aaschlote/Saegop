@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -41,6 +43,10 @@ public class AtividadePolicialSisp {
 
 	@Column(name = "NR_LATITUDE")
 	private double latitude;
+	
+	@Column(name = "ID_NATUREZA_OCORR")
+	@Enumerated(EnumType.ORDINAL)
+	private NaturezaOcorrenciaSisp naturezaOcorrenciaSisp;
 
 	public Long getId() {
 		return id;
@@ -104,6 +110,15 @@ public class AtividadePolicialSisp {
 
 	public void setDsTipificacao(String dsTipificacao) {
 		this.dsTipificacao = dsTipificacao;
+	}
+
+	public NaturezaOcorrenciaSisp getNaturezaOcorrenciaSisp() {
+		return naturezaOcorrenciaSisp;
+	}
+
+	public void setNaturezaOcorrenciaSisp(
+			NaturezaOcorrenciaSisp naturezaOcorrenciaSisp) {
+		this.naturezaOcorrenciaSisp = naturezaOcorrenciaSisp;
 	}
 	
 	
