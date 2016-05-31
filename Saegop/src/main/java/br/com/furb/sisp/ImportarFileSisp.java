@@ -16,6 +16,7 @@ import javax.persistence.Query;
 import ptstemmer.Stemmer;
 import ptstemmer.implementations.OrengoStemmer;
 import br.com.furb.controller.CriarAtividadePolicialSisp;
+import br.com.furb.controller.DeletarOcorrenciasSisp;
 import br.com.furb.dao.ConnectionDB;
 import br.com.furb.model.AtividadePolicialSisp;
 import br.com.furb.textMining.AnalisarInformacao;
@@ -115,13 +116,7 @@ public class ImportarFileSisp {
 	}
 
 	private final void removeAllInstances() {
-		conection.getManager().getTransaction().begin();
-		Query query = conection.getManager().createQuery(
-				"from AtividadePolicialSisp as a");
-		for (Object obj : query.getResultList()) {
-			conection.getManager().remove(obj);
-		}
-		conection.getManager().getTransaction().commit();
+		new DeletarOcorrenciasSisp(conection).removeAllInstances();
 	}
 
 }

@@ -1,4 +1,4 @@
-package br.com.furb.test;
+package br.com.furb.schedule;
 
 
 import java.util.List;
@@ -11,7 +11,7 @@ import br.com.furb.dao.ConnectionDB;
 import br.com.furb.model.AtividadePolicialSisp;
 import br.com.furb.sisp.ClassificarSisp;
 
-public class TestClassificacaoSisp {
+public class ScheduleClassificacaoSisp {
 	
 	public static void main(String[] args) {
 		
@@ -44,7 +44,6 @@ public class TestClassificacaoSisp {
 			conection.getManager().getTransaction().commit();
 			
 			System.out.println("TERMINOU");
-			
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

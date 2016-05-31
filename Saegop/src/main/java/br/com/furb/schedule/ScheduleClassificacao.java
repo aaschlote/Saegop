@@ -1,4 +1,4 @@
-package br.com.furb.test;
+package br.com.furb.schedule;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import br.com.furb.dao.ConnectionDB;
 import br.com.furb.model.AtividadePolicial;
 import br.com.furb.textMining.AnalisarInformacao;
 
-public class TestClassificacao {
+public class ScheduleClassificacao {
 	
 	public static void main(String[] args) {
 		
@@ -24,8 +24,6 @@ public class TestClassificacao {
 			List<AtividadePolicial> atividadePoliciais = query.getResultList();
 			
 			Stemmer stemmer = new OrengoStemmer();
-			
-			
 			
 			for (AtividadePolicial atividadePolicial : atividadePoliciais) {
 				AnalisarInformacao analisar = new AnalisarInformacao("", "", "", null, stemmer);

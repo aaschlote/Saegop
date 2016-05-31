@@ -19,8 +19,18 @@ public class CriarAtividadePolicialSisp {
 	public void inserir(){
 		conection.getManager().getTransaction().begin();
 		
+		int i = 0;
+		
 		for (AtividadePolicialSisp atividadePolicial : listaAtividades) {
+			
 			conection.getManager().persist(atividadePolicial);
+			
+			if	((i % 1000) == 0){
+				conection.getManager().flush();
+				conection.getManager().clear();
+			}
+			
+			i++;
 		}
 		
 		conection.getManager().getTransaction().commit();

@@ -1,10 +1,10 @@
-package br.com.furb.test;
+package br.com.furb.schedule;
 
 import java.io.File;
 
 import br.com.furb.sisp.ImportarFileSisp;
 
-public class TestImpFileSisp {
+public class ScheduleImpFileSisp {
 	
 	public static void main(String[] args) {
 		

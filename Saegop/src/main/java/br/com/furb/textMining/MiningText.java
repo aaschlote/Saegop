@@ -14,6 +14,7 @@ import org.jsoup.select.Elements;
 import ptstemmer.Stemmer;
 import ptstemmer.implementations.OrengoStemmer;
 import br.com.furb.controller.CriarAtividadePolicial;
+import br.com.furb.controller.DeletarOcorrencias;
 import br.com.furb.dao.ConnectionDB;
 import br.com.furb.model.AtividadePolicial;
 
@@ -256,12 +257,7 @@ public class MiningText {
 	}
 	
 	public final void removeAllInstances() {
-		conection.getManager().getTransaction().begin();
-	    Query query = conection.getManager().createQuery("from AtividadePolicial as a");
-	    for (Object obj : query.getResultList()) {
-	    	conection.getManager().remove(obj);
-	    }
-	    conection.getManager().getTransaction().commit();
+		new DeletarOcorrencias(conection).removeAllInstances();
 	}
 
 }
