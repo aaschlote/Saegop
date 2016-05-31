@@ -7,6 +7,7 @@ public class ScheduleMineracao {
 	public static void main(String[] args) {
 		MiningText mining = new MiningText();
 		mining.extrair();
+		System.exit(0);
 	}
 
 }

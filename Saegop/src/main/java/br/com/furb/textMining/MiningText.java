@@ -4,8 +4,6 @@ import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import javax.persistence.Query;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,8 +11,7 @@ import org.jsoup.select.Elements;
 
 import ptstemmer.Stemmer;
 import ptstemmer.implementations.OrengoStemmer;
-import br.com.furb.controller.CriarAtividadePolicial;
-import br.com.furb.controller.DeletarOcorrencias;
+import br.com.furb.controller.AtividadePolicialController;
 import br.com.furb.dao.ConnectionDB;
 import br.com.furb.model.AtividadePolicial;
 
@@ -22,13 +19,14 @@ import com.google.maps.GeoApiContext;
 
 public class MiningText {
 	
-	ArrayList<String> listaString = new ArrayList<String>();
-	ArrayList<AnalisarInformacao> listaAnalisar = new ArrayList<AnalisarInformacao>();
-	ArrayList<AtividadePolicial> listaAtividades = new ArrayList<AtividadePolicial>();
+	private ArrayList<String> listaLinks = new ArrayList<String>();
+	private ArrayList<AnalisarInformacao> listaAnalisar = new ArrayList<AnalisarInformacao>();
+	private ArrayList<AtividadePolicial> listaAtividades = new ArrayList<AtividadePolicial>();
 	private static final int qtPages = 90;
-	GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyClyg2c5hxqJotZHUhAPx8oufyvgzlaix4");
-	ConnectionDB conection = new ConnectionDB();
+	private GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyClyg2c5hxqJotZHUhAPx8oufyvgzlaix4");
+	private ConnectionDB conection = new ConnectionDB();
 	Stemmer stemmer;
+	private AtividadePolicialController atividadePolicController = new AtividadePolicialController(conection);
 
 	public void extrair() {
 		try {
@@ -44,7 +42,7 @@ public class MiningText {
 			Elements searchResults = document.select(".post > h2 > a");
 			for (Element result : searchResults) {
 				String link = result.attr("href");
-				listaString.add(link);
+				listaLinks.add(link);
 			}
 			
 			document = null;
@@ -60,7 +58,7 @@ public class MiningText {
 						.select(".post > h2 > a");
 				for (Element resultSub : searchResultsSub) {
 					String link = resultSub.attr("href");
-					listaString.add(link);
+					listaLinks.add(link);
 					System.out.println(link);
 				}
 				
@@ -74,11 +72,11 @@ public class MiningText {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		} finally {
-			System.out.println("QUANTIDADE DE LINKS " + listaString.size());
+			System.out.println("QUANTIDADE DE LINKS " + listaLinks.size());
 		}
 
 		try {
-			for (String dsLink : listaString) {
+			for (String dsLink : listaLinks) {
 				extraiarOcorrencias(dsLink);
 			}
 		} catch (Exception e) {
@@ -88,7 +86,7 @@ public class MiningText {
 					+ listaAnalisar.size());
 		}
 		
-		listaString.clear();
+		listaLinks.clear();
 
 		try {
 
@@ -110,8 +108,7 @@ public class MiningText {
 			}
 			
 			System.out.println("Inserindo");
-			CriarAtividadePolicial criarAtividade = new CriarAtividadePolicial(listaAtividades, conection);
-			criarAtividade.inserir();
+			atividadePolicController.inserir(listaAtividades);
 			
 			System.out.println("fim");
 
@@ -168,7 +165,7 @@ public class MiningText {
 		document = null;
 	}
 	
-	public void extrairFatos(String dsData, String dsTexto){
+	private void extrairFatos(String dsData, String dsTexto){
 		
 		String dsHorario = "";
 		String dsLocal = "";
@@ -257,7 +254,7 @@ public class MiningText {
 	}
 	
 	public final void removeAllInstances() {
-		new DeletarOcorrencias(conection).removeAllInstances();
+		atividadePolicController.deletarAtividades();
 	}
 
 }

@@ -11,7 +11,7 @@ public class ScheduleImpFileSisp {
 		try {
 			
 			
-			File[] arquivos = new File[7];
+			File[] arquivos = new File[6];
 			
 			arquivos[0] = new File("Relatorio_2016.csv");
 			arquivos[1] = new File("Relatorio_2015.csv");
@@ -25,6 +25,8 @@ public class ScheduleImpFileSisp {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
+		} finally{
+			System.exit(0);
 		}
 		
 	}

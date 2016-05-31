@@ -11,12 +11,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.Query;
-
 import ptstemmer.Stemmer;
 import ptstemmer.implementations.OrengoStemmer;
-import br.com.furb.controller.CriarAtividadePolicialSisp;
-import br.com.furb.controller.DeletarOcorrenciasSisp;
+import br.com.furb.controller.AtividadePolicialSispController;
 import br.com.furb.dao.ConnectionDB;
 import br.com.furb.model.AtividadePolicialSisp;
 import br.com.furb.textMining.AnalisarInformacao;
@@ -30,6 +27,7 @@ public class ImportarFileSisp {
 	ConnectionDB conection = new ConnectionDB();
 	Stemmer stemmer;
 	final static String separador = ";";
+	private AtividadePolicialSispController AtiviSispController = new AtividadePolicialSispController(conection);
 
 	public void importarArquivosSisp(File[] arquivos) throws Exception {
 
@@ -108,15 +106,14 @@ public class ImportarFileSisp {
 			}
 
 			System.out.println("iniciou");
-			CriarAtividadePolicialSisp criarAtiviSisp = new CriarAtividadePolicialSisp(listaAtividade, conection);
-			criarAtiviSisp.inserir();
+			AtiviSispController.inserir(listaAtividade);
 			System.out.println("terminou");
 			
 		}
 	}
 
 	private final void removeAllInstances() {
-		new DeletarOcorrenciasSisp(conection).removeAllInstances();
+		AtiviSispController.deletarAtividadesSisp();
 	}
 
 }

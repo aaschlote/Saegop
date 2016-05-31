@@ -6,6 +6,7 @@ import javax.persistence.Query;
 
 import ptstemmer.Stemmer;
 import ptstemmer.implementations.OrengoStemmer;
+import br.com.furb.controller.AtividadePolicialController;
 import br.com.furb.dao.ConnectionDB;
 import br.com.furb.model.AtividadePolicial;
 import br.com.furb.textMining.AnalisarInformacao;
@@ -16,6 +17,7 @@ public class ScheduleClassificacao {
 		
 		try {
 			ConnectionDB conection = new ConnectionDB();
+			AtividadePolicialController atividadePolicController = new AtividadePolicialController(conection);
 			
 			String sql = "FROM AtividadePolicial a where length(dsFato) > 40 ";
 					
@@ -32,13 +34,7 @@ public class ScheduleClassificacao {
 				
 			}
 			
-			conection.getManager().getTransaction().begin();
-			
-			for (AtividadePolicial atividadePolicial : atividadePoliciais) {
-				conection.getManager().merge(atividadePolicial);
-			}
-			
-			conection.getManager().getTransaction().commit();
+			atividadePolicController.atualizarClassificacoes(atividadePoliciais);
 			
 			System.out.println("FIM");
 			

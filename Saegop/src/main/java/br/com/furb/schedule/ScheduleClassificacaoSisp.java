@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import ptstemmer.Stemmer;
 import ptstemmer.implementations.OrengoStemmer;
+import br.com.furb.controller.AtividadePolicialSispController;
 import br.com.furb.dao.ConnectionDB;
 import br.com.furb.model.AtividadePolicialSisp;
 import br.com.furb.sisp.ClassificarSisp;
@@ -18,6 +19,8 @@ public class ScheduleClassificacaoSisp {
 		try {
 			
 			ConnectionDB conection = new ConnectionDB();
+			
+			AtividadePolicialSispController atividadePolicSispController = new AtividadePolicialSispController(conection); 
 			
 			String sql = "FROM AtividadePolicialSisp a where dsTipificacao is not null ";
 					
@@ -35,13 +38,7 @@ public class ScheduleClassificacaoSisp {
 			
 			System.out.println("INICIOU");
 			
-			conection.getManager().getTransaction().begin();
-			
-			for (AtividadePolicialSisp atividadePolicialSisp : listAtividadePolicialSisp) {
-				conection.getManager().merge(atividadePolicialSisp);
-			}
-			
-			conection.getManager().getTransaction().commit();
+			atividadePolicSispController.atualizarClassificacoes(listAtividadePolicialSisp);
 			
 			System.out.println("TERMINOU");
 			
