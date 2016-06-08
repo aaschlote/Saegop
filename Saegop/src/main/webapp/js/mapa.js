@@ -4,6 +4,8 @@ var geocoder;
 var heatmaps = [];
 
 var legendas;
+var widthGmap;
+var fullScreen;
 
 var gradient = [
                 'rgba(0, 255, 255, 0)',
@@ -36,6 +38,8 @@ function initialize() {
     
     popularLegendaObjetos();
      
+    widthGmap = $("#mapa").width();
+    fullScreen = false;
         
 }
 
@@ -338,3 +342,46 @@ function deleteMarkers() {
   clearMarkers();
   markers = [];
 }
+
+
+function fullScreenT(){
+	if	(fullScreen === false){
+		$("#mapa").css({
+	        position: 'fixed',
+	        top: 0,
+	        left: 0,
+	        width: '100%',
+	        height: '100%',
+	        backgroundColor: 'white'
+	    });
+	
+	    $("#map-canvas").css({
+	        height: '100%'
+	    });
+	    
+	    var divBarra = document.getElementById('tela-lateral');
+	    divBarra.style.display = 'none';
+	
+	    google.maps.event.trigger(map, 'resize');
+	    fullScreen = true;
+	} else{
+		 $("#mapa").css({
+		        position: 'relative',
+		        top: 0,
+		        width: widthGmap,
+		        height: 500,
+		        backgroundColor: 'transparent'
+		    });
+		 
+		 	$("#map-canvas").css({
+		        height: '0%'
+		    });
+		 	
+		 	var divBarra = document.getElementById('tela-lateral');
+		 	divBarra.style.display = 'block';
+	
+		    google.maps.event.trigger(map, 'resize');
+		   
+		    fullScreen = false;
+	 }
+}	

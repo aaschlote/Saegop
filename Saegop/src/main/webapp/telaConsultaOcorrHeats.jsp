@@ -21,7 +21,7 @@
 	
 		<div class="container-fluid">		
 			<div class="row">
-	        	<div class="col-sm-3 col-md-2 sidebar">
+	        	<div class="col-sm-3 col-md-2 sidebar" id="tela-lateral">
 	        		<h1 class="page-header">Filtros
 	        		</h1>
         			<label>Dt inicio:</label>
@@ -59,6 +59,7 @@
 			          	</div>
 			          	<!-- Maps API Javascript -->
 			        	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmBHVNZkiSU8JyL16GF85EGE8qv3D42HM&libraries=visualization&sensor=true_or_false"></script>
+			        	<div id="map-canvas"></div>
 			        	
 					</div>				        			          		
 		         </div>

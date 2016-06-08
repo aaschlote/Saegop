@@ -8,6 +8,7 @@
 <link href="css/dashboard.css" rel="stylesheet">
 <link href="css/datepicker.css" rel="stylesheet">
 <link href="css/infoWindowsGmaps.css" rel="stylesheet">
+<script src="js/mapa.js"></script>
 </head>
 <body>
 
@@ -20,7 +21,7 @@
             		<span class="icon-bar"></span>
             		<span class="icon-bar"></span>
           		</button>
-          		<a class="navbar-brand" href="#">Consulta de ocorrências de policiais</a>
+          		<a class="navbar-brand" href="javascript:fullScreenT();">Consulta de ocorrências de policiais</a>
         	</div>
         	<div id="navbar" class="navbar-collapse collapse">
           		<ul class="nav navbar-nav navbar-right">
