@@ -50,8 +50,8 @@ public enum NaturezaOcorrenciaSisp {
 	      case DANO: return "Dano";
 	      case ESTELIONATO: return "Estelionato";
 	      case LESAO_CORPORAL_AGRESSAO: return "Lesão Corporal/Agressão";
-	      case PERTUBACAO: return "Pertubação";
-	      case DIFAMCAO: return "Difamção";
+	      case PERTUBACAO: return "Perturbação";
+	      case DIFAMCAO: return "Difamação";
 	      case CALUNIA: return "Calúnia";
 	      case ROUBO: return "Roubo";
 	      case FUGA: return "Fuga";

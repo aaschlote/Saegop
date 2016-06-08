@@ -40,9 +40,9 @@ public enum NaturezaOcorrencia {
 	      case TRAFICO: return "Tráfico";
 	      case ESTUPRO: return "Estupro";
 	      case FURTO: return "Furto";
-	      case HOMICIDIO: return "Homicído";
+	      case HOMICIDIO: return "Homicídio";
 	      case LESAO_CORPORAL_AGRESSAO: return "Lesão Corporal/Agressão";
-	      case PERTUBACAO: return "Pertubação";
+	      case PERTUBACAO: return "Perturbação";
 	      case PORTE_ARMA: return "Porte de Arma";
 	      case PORTE_DROGAS: return "Porte de Drogas";
 	      case ROUBO: return "Roubo";

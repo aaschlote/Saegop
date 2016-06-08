@@ -6,10 +6,16 @@ public class ClassificacaoNatureza {
 
 	public NaturezaOcorrencia getNaturezaOcorrencia(String[] acao, String dsFato) {
 
-		String acaoPolicial = acao[1];
+		String acaoPolicial = acao[0];
+		String crimePolicial = acao[1];
 		String objetoPolicial = acao[2];
-
-		switch (acaoPolicial) {
+		
+		if	(acaoPolicial.equals("prend") && crimePolicial.equalsIgnoreCase("nao-identifi")){
+			return NaturezaOcorrencia.MANDATO_PRISAO;
+		}
+		
+		
+		switch (crimePolicial) {
 		case "arromb":
 			return NaturezaOcorrencia.ARROMBAMENTO;
 

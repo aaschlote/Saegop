@@ -244,7 +244,7 @@ public class AnalisarInformacao {
 				continue;
 			}
 		}
-		
+		System.out.println(acao[0]+";"+acao[1]+";"+acao[2]);
 		return new ClassificacaoNatureza().getNaturezaOcorrencia(acao,dsFato);
 	}
 	

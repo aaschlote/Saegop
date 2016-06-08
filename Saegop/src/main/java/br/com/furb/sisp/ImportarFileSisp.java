@@ -58,21 +58,15 @@ public class ImportarFileSisp {
 					atividadeSisp.setDsTipificacao(info[6]);
 
 					if (!info[4].equalsIgnoreCase("")) {
-
 						Calendar dtOcorrenciaCal = Calendar.getInstance();
 						Date dtOcorrencia = formato.parse(info[4]);
 						dtOcorrenciaCal.setTime(dtOcorrencia);
 						atividadeSisp.setDtOcorrencia(dtOcorrenciaCal);
-					}
-					
-					listaAtividade.add(atividadeSisp);
-					
+					}					
+					listaAtividade.add(atividadeSisp);					
 				} catch (Exception e) {
 					atividadeSisp = null;
-				}
-				
-				
-				
+				}				
 			}
 			
 			Map<String, double[]> localMap = new HashMap<String, double[]>();

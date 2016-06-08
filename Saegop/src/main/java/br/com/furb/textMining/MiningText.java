@@ -35,15 +35,15 @@ public class MiningText {
 			
 			removeAllInstances();
 			
-			Document document = Jsoup
-					.connect(
-							"http://www.saladenoticias.net/?s=REGI%C3%83O+POLICIAL+MILITAR&submit=Pesquisar")
-					.timeout(10 * 1000).get();
-			Elements searchResults = document.select(".post > h2 > a");
-			for (Element result : searchResults) {
-				String link = result.attr("href");
-				listaLinks.add(link);
-			}
+				Document document = Jsoup
+						.connect(
+								"http://www.saladenoticias.net/?s=REGI%C3%83O+POLICIAL+MILITAR&submit=Pesquisar")
+						.timeout(10 * 1000).get();
+				Elements searchResults = document.select(".post > h2 > a");
+				for (Element result : searchResults) {
+					String link = result.attr("href");
+					listaLinks.add(link);
+				}
 			
 			document = null;
 			

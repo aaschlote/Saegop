@@ -18,7 +18,7 @@ public class TestEndereco {
 		
 		GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyClyg2c5hxqJotZHUhAPx8oufyvgzlaix4");
 		
-		String dsLocalAux = "RUA MARIA BALBINA";
+		String dsLocalAux = "PRESIDENTE JOHN KENNEDY";
 		
 		dsLocalAux = dsLocalAux.replace("Dr", "Doutor");
 		//dsLocalAux = dsLocalAux.replace("Prof", "Professor");
