@@ -1,11 +1,11 @@
 package br.com.furb.schedule;
 
-import br.com.furb.textMining.MiningText;
+import br.com.furb.textMining.TextMining;
 
 public class ScheduleMineracao {
 	
 	public static void main(String[] args) {
-		MiningText mining = new MiningText();
+		TextMining mining = new TextMining();
 		mining.extrair();
 		System.exit(0);
 	}
