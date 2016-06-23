@@ -59,7 +59,7 @@ public enum NaturezaOcorrenciaSisp {
 	      case MANDATO_PRISAO: return "Mandato de prisão";
 	      case REAPARECIMENTO_PESSOA: return "Reaparecimento de pessoa";
 	      case DESAPARECIMENTO_PESSOA: return "Desaparecimento de pessoa";
-	      case HOMICIDIO: return "Homicídio";
+	      case HOMICIDIO: return "Homicídio/Suicídios/Mortes adversas";
 	      case ESTUPRO: return "Estupro";
 	      case EMBRIAGUEZ: return "Embriaguez";
 	      case ACIDENTE_TRANSITO: return "Acidente de trânsito";
